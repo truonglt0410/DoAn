@@ -1,6 +1,7 @@
 package com.edu.fpt.hoursemanager.management.account.entity;
 
 import com.edu.fpt.hoursemanager.common.entity.EntityCommon;
+import com.edu.fpt.hoursemanager.management.directory.entity.Directory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,5 +26,6 @@ public class Role extends EntityCommon {
     @ManyToMany(mappedBy = "roles")
     private Collection<Account> accounts;
 
-
+    @ManyToMany(mappedBy = "roles")
+    private Collection<Directory> directories;
 }

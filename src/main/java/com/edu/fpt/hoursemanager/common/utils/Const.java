@@ -6,5 +6,11 @@ import java.util.Map;
 public class Const {
     public static Map<String, Integer> OTPS = new HashMap<>();
 
+    public static Map<String, String> FORGOTPASS = new HashMap<>();
+
     public static Map<String, String> TOKENS = new HashMap<>();
+
+    public static final String UPLOAD_URL = "./uploads";
+
+    public static Map<String, Map<String, String>> ACCOUNT_TOKENS = new HashMap<>();
 }

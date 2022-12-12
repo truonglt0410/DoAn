@@ -71,4 +71,9 @@ public class Utils {
         return random.nextInt(900000)+100000;
     }
 
+    public static String generateForgotPassword() {
+        String result = "";
+        result = RandomStringUtils.random(20, true, true);
+        return result;
+    }
 }

@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,7 +15,9 @@ public class BuildingDetailResponse {
     private String address;
     private String image;
     private String description;
-    private String utilities;
-    private String rules;
+    private List<String> rules;
+    private List<String> utilities;
     private String rulesImage;
+    private Double longitude;
+    private Double latitude;
 }

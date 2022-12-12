@@ -9,4 +9,6 @@ public interface RoleService {
     Role saveRole(Role role);
 
     List<Role> saveRole(List<Role> roles);
+
+    List<Role> getAllRole();
 }

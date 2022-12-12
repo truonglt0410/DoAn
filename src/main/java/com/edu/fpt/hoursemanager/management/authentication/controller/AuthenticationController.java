@@ -1,42 +1,33 @@
 package com.edu.fpt.hoursemanager.management.authentication.controller;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.edu.fpt.hoursemanager.common.models.ResponseModels;
-import com.edu.fpt.hoursemanager.common.utils.Const;
-import com.edu.fpt.hoursemanager.exceptions.HouseManagerExceptions;
+import com.edu.fpt.hoursemanager.management.account.repository.AccountRepository;
+import com.edu.fpt.hoursemanager.management.account.repository.RoleRepository;
+import com.edu.fpt.hoursemanager.management.account.service.AccountService;
+import com.edu.fpt.hoursemanager.management.authentication.model.request.ChangePasswordRequest;
+import com.edu.fpt.hoursemanager.management.authentication.model.request.RegisterEmployeeRequest;
+import com.edu.fpt.hoursemanager.management.authentication.model.request.RegisterRequest;
 import com.edu.fpt.hoursemanager.management.authentication.service.AuthenticationService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
-import static java.util.Arrays.stream;
 
 @RestController
 @RequestMapping("/authentication")
 public class AuthenticationController {
-
     @Autowired
     private AuthenticationService authenticationService;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
+    private AccountService accountService;
+
+    private AccountRepository accountRepository;
+
     @GetMapping("/wellcome")
-    public ResponseEntity<?> wellcome() {
-        return ResponseModels.success("true");
+    public ResponseEntity<?> wellcome(@RequestParam("email") String email) {
+        return authenticationService.wellcome(email);
     }
 
     @GetMapping("/forgot")
@@ -49,9 +40,30 @@ public class AuthenticationController {
         return authenticationService.checkOTP(otp,email);
     }
 
+
+    @GetMapping("/create-password")
+    public ResponseEntity<?> checkCreatePass(@RequestParam("key") String key, @RequestParam("email") String email,
+                                             @RequestParam("password") String password) {
+        return authenticationService.createPassword(key, email, password);
+    }
+
     @GetMapping("/logout")
     public ResponseEntity<?> logout(@RequestParam("email") String email) {
         return authenticationService.logout(email);
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<ResponseModels> register(@RequestBody RegisterRequest registerRequest){
+        return authenticationService.register(registerRequest);
+    }
+
+    @PostMapping("/register-employee")
+    public ResponseEntity<ResponseModels> registerEmployee(@RequestBody RegisterEmployeeRequest registerEmployeeRequest){
+        return authenticationService.registerEmployee(registerEmployeeRequest);
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<ResponseModels> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
+        return authenticationService.changePassword(changePasswordRequest);
+    }
 }

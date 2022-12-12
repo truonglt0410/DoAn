@@ -12,6 +12,7 @@ public class BuildingResponse {
     private String name;
     private String address;
     private String image;
-
+    private Double longitude;
+    private Double latitude;
     private Long accountId;
 }

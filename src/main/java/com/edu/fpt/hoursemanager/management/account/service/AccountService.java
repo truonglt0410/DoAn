@@ -19,4 +19,6 @@ public interface AccountService {
     List<AccountResponse> getAccounts();
 
     Account getAccountById(Long id);
+
+    Account deleteAccount(String email);
 }

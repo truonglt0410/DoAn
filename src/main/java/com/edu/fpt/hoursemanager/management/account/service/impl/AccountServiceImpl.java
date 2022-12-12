@@ -6,6 +6,8 @@ import com.edu.fpt.hoursemanager.management.account.model.response.AccountRespon
 import com.edu.fpt.hoursemanager.management.account.repository.AccountRepository;
 import com.edu.fpt.hoursemanager.management.account.repository.RoleRepository;
 import com.edu.fpt.hoursemanager.management.account.service.AccountService;
+import com.edu.fpt.hoursemanager.management.contact.entity.Contact;
+import com.edu.fpt.hoursemanager.management.contact.repository.ContactRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -35,6 +37,9 @@ public class AccountServiceImpl implements AccountService , UserDetailsService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private ContactRepository contactRepository;
 
 
     @Override
@@ -74,6 +79,16 @@ public class AccountServiceImpl implements AccountService , UserDetailsService {
     public Account getAccountById(Long id) {
         log.info("Fetching user {}",id);
         return accountRepository.findAccountById(id);
+    }
+
+    @Override
+    public Account deleteAccount(String email) {
+        Account acc = accountRepository.findByUsername(email);
+        Contact contact = contactRepository.getAccountContactByEmail(email);
+        contact.setDeleted(true);
+        acc.setDeleted(true);
+        contactRepository.save(contact);
+        return accountRepository.save(acc);
     }
 
     @Override
