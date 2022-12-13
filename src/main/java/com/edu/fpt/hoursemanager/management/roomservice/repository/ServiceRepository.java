@@ -13,6 +13,10 @@ import java.util.List;
 
 @Repository
 public interface ServiceRepository extends JpaRepository<Service, Long> {
+
+    @Query("select new com.edu.fpt.hoursemanager.management.roomservice.model.response.ServiceResponse(s.id,s.name,s.price,s.typePayment) from Service s where s.deleted = false ")
+    List<ServiceResponse> getAllServiceAllBuilding();
+
     @Query("select new com.edu.fpt.hoursemanager.management.roomservice.model.response.ServiceResponse(s.id,s.name,s.price,s.typePayment,b.id) from Service s inner join s.roomServices rs inner join rs.room r inner join r.building b where s.deleted = false ")
     List<ServiceResponse> getAllService();
 

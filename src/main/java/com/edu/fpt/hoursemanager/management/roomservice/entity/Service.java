@@ -3,6 +3,7 @@ package com.edu.fpt.hoursemanager.management.roomservice.entity;
 import com.edu.fpt.hoursemanager.common.entity.EntityCommon;
 import com.edu.fpt.hoursemanager.management.building.entity.Building;
 import com.edu.fpt.hoursemanager.management.room.entity.Room;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,9 +24,11 @@ public class Service extends EntityCommon {
     private String typePayment;
     private boolean isElectric;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "service")
     private Collection<RoomService> roomServices;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "building_id")
     private Building building;

@@ -14,6 +14,16 @@ public class ServiceController {
     @Autowired
     ServiceService serviceService;
 
+    @GetMapping("/get-all-service-all-building")
+    public ResponseEntity<ResponseModels> getAllServiceAllBuilding() {
+        return serviceService.getAllServiceAllBuilding();
+    }
+
+    @GetMapping("/get-service-by-id")
+    public ResponseEntity<ResponseModels> getServiceById(@RequestParam Long id) {
+        return serviceService.getServiceById(id);
+    }
+
     @GetMapping("/get-all")
     public ResponseEntity<ResponseModels> getAllService() {
         return serviceService.getAllService();

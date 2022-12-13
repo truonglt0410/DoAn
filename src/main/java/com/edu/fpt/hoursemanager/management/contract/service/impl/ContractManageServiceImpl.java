@@ -108,8 +108,8 @@ public class ContractManageServiceImpl implements ContractManageService {
                     contract.setRoomPaymentCycle(contractRequest.getRoomPaymentCycle());
                     contract.setCreatedBy(accountLoginCommon.getUserName());
                     contract.setCreatedDate(LocalDate.now());
-                    contract.setFromDate(SIMPLE_DATE_FORMAT.parse(contractRequest.getFromDate()));
-                    contract.setToDate(SIMPLE_DATE_FORMAT.parse(contractRequest.getToDate()));
+                    contract.setFromDate(contractRequest.getFromDate() != null ? SIMPLE_DATE_FORMAT.parse(contractRequest.getFromDate()) : null);
+                    contract.setToDate(contractRequest.getToDate() != null ? SIMPLE_DATE_FORMAT.parse(contractRequest.getToDate()) : null);
 
                     List<RenterRoom> renterRooms = getRenterRoom(contract, contractRequest.getRooms(),contractRequest.getContacts());
                     contract.setRenterRooms(renterRooms);
@@ -132,8 +132,8 @@ public class ContractManageServiceImpl implements ContractManageService {
             AccountLoginCommon accountLoginCommon = new AccountLoginCommon();
             if(accountLoginCommon.getUserName() != null){
                 Contract contract = contractManageRepository.getByContractId(updateContractRequest.getId());
-                contract.setFromDate(SIMPLE_DATE_FORMAT.parse(updateContractRequest.getFromDate()));
-                contract.setToDate(SIMPLE_DATE_FORMAT.parse(updateContractRequest.getToDate()));
+                contract.setFromDate(updateContractRequest.getFromDate()!= null ? SIMPLE_DATE_FORMAT.parse(updateContractRequest.getFromDate()) : null );
+                contract.setToDate(updateContractRequest.getToDate() != null ? SIMPLE_DATE_FORMAT.parse(updateContractRequest.getToDate()) : null);
                 contract.setDeposit(updateContractRequest.getDeposit());
                 contract.setRoomRate(updateContractRequest.getRoomRate());
                 contract.setRoomPaymentCycle(updateContractRequest.getRoomPaymentCycle());
