@@ -7,17 +7,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ServiceResponse {
+public class BasicRoomServiceResponse {
     private Long id;
     private String name;
     private Double price;
+    private Double amount;
+    private Double sumPrice;
     private String typePayment;
     private Long idBuilding;
 
-    public ServiceResponse(Long id, String name, Double price, String typePayment) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.typePayment = typePayment;
-    }
 }

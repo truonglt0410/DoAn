@@ -19,6 +19,6 @@ public class SalaryResponse {
     private Boolean status;
     private Date fromDate;
     private Date toDate;
-    private List<ServiceResponse> serviceList;
+    private List<BasicRoomServiceResponse> serviceList;
     private Double sumPrice;
 }

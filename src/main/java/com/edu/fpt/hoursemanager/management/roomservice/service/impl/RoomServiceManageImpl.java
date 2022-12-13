@@ -33,8 +33,8 @@ public class RoomServiceManageImpl implements RoomServiceManage {
     @Override
     public ResponseEntity<ResponseModels> getAllServiceOfRoomByMonth(String date) {
         List<RoomServiceResponse> roomServiceResponses;
-        Map<Long, List<ServiceResponse>> map = new HashMap<>();
-        ServiceResponse serviceResponse;
+        Map<Long, List<BasicRoomServiceResponse>> map = new HashMap<>();
+        BasicRoomServiceResponse serviceResponse;
         List<SalaryResponse> salaryResponses = new ArrayList<>();
         SalaryResponse roomService;
         try {
@@ -63,12 +63,12 @@ public class RoomServiceManageImpl implements RoomServiceManage {
                     roomService.setStatus(response.getStatus());
                     roomService.setFromDate(response.getFromDate());
                     roomService.setToDate(response.getToDate());
-                    serviceResponse = new ServiceResponse(response.getServiceId(), response.getServiceName(), response.getServicePrice(), response.getTypePayment(), response.getIdBuilding());
+                    serviceResponse = new BasicRoomServiceResponse(response.getServiceId(), response.getServiceName(), response.getServicePrice(), response.getAmount(), response.getTotal(), response.getTypePayment(), response.getIdBuilding());
                     map.put(response.getRoomId(), List.of(serviceResponse));
                     salaryResponses.add(roomService);
                 }else {
-                    List<ServiceResponse> list = new ArrayList<>(map.get(response.getRoomId()));
-                    serviceResponse = new ServiceResponse(response.getServiceId(), response.getServiceName(), response.getServicePrice(), response.getTypePayment(), response.getIdBuilding());
+                    List<BasicRoomServiceResponse> list = new ArrayList<>(map.get(response.getRoomId()));
+                    serviceResponse = new BasicRoomServiceResponse(response.getServiceId(), response.getServiceName(), response.getServicePrice(), response.getAmount(), response.getTotal(), response.getTypePayment(), response.getIdBuilding());
                     list.add(serviceResponse);
                     map.put(response.getRoomId(), list);
                 }
@@ -77,15 +77,15 @@ public class RoomServiceManageImpl implements RoomServiceManage {
             for(SalaryResponse salary : salaryResponses){
                 Double sumSalary = 0.0;
                 salary.setServiceList(map.get(salary.getRoomId()));
-                for(ServiceResponse service : map.get(salary.getRoomId())){
-                    sumSalary += service.getPrice();
+                for(BasicRoomServiceResponse service : map.get(salary.getRoomId())){
+                    sumSalary += service.getSumPrice();
                 }
-                sumSalary += salary.getRoomRate();
+                sumSalary += salary.getRoomRate() != null ?  salary.getRoomRate() : 0.0;
                 salary.setSumPrice(sumSalary);
             }
 
         }catch (Exception e){
-
+            return ResponseModels.error("Room Service Manage Error : " + e.getMessage());
         }
         return ResponseModels.success(salaryResponses);
     }
@@ -93,7 +93,7 @@ public class RoomServiceManageImpl implements RoomServiceManage {
     @Override
     public ResponseEntity<ResponseModels> getDetailPayment(Long id, String date) {
         SalaryResponse salaryResponse = null;
-        List<ServiceResponse> serviceResponse = new ArrayList<>();
+        List<BasicRoomServiceResponse> serviceResponse = new ArrayList<>();
         Double sumPrice = 0.0;
         try{
             Calendar calendar = Calendar.getInstance();
@@ -120,14 +120,14 @@ public class RoomServiceManageImpl implements RoomServiceManage {
                         salaryResponse.setStatus(room.getStatus());
                         salaryResponse.setFromDate(room.getFromDate());
                         salaryResponse.setToDate(room.getToDate());
-                        sumPrice += room.getServicePrice() + room.getRoomRate();
+                        sumPrice += room.getRoomRate() != null ? room.getTotal() + room.getRoomRate() : room.getTotal() + 0.0;
                         salaryResponse.setSumPrice(sumPrice);
-                        ServiceResponse response = new ServiceResponse(room.getServiceId(), room.getServiceName(), room.getServicePrice(), room.getTypePayment(), room.getIdBuilding());
+                        BasicRoomServiceResponse response = new BasicRoomServiceResponse(room.getServiceId(), room.getServiceName(), room.getServicePrice(), room.getAmount(), room.getTotal(), room.getTypePayment(), room.getIdBuilding());
                         serviceResponse.add(response);
                     }else {
-                        ServiceResponse response = new ServiceResponse(room.getServiceId(), room.getServiceName(), room.getServicePrice(), room.getTypePayment(), room.getIdBuilding());
+                        BasicRoomServiceResponse response = new BasicRoomServiceResponse(room.getServiceId(), room.getServiceName(), room.getServicePrice(), room.getAmount(), room.getTotal(), room.getTypePayment(), room.getIdBuilding());
                         serviceResponse.add(response);
-                        sumPrice += room.getServicePrice();
+                        sumPrice += room.getTotal();
                         salaryResponse.setSumPrice(sumPrice);
                     }
                 }

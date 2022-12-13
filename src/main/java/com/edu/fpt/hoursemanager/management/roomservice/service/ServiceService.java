@@ -5,6 +5,8 @@ import com.edu.fpt.hoursemanager.management.roomservice.model.request.ServiceReq
 import org.springframework.http.ResponseEntity;
 
 public interface ServiceService {
+    ResponseEntity<ResponseModels> getAllServiceAllBuilding();
+
     ResponseEntity<ResponseModels> getAllService();
 
     ResponseEntity<ResponseModels> getAllServiceByIdRoom(Long id);
@@ -22,4 +24,6 @@ public interface ServiceService {
     ResponseEntity<ResponseModels> getAllServiceByAccount();
 
     ResponseEntity<ResponseModels> getAllServiceByIdBuilding(Long id);
+
+    ResponseEntity<ResponseModels> getServiceById(Long id);
 }

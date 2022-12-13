@@ -3,7 +3,6 @@ package com.edu.fpt.hoursemanager.management.roomservice.repository;
 import com.edu.fpt.hoursemanager.management.roomservice.entity.RoomService;
 import com.edu.fpt.hoursemanager.management.roomservice.model.response.CheckRoomStatusResponse;
 import com.edu.fpt.hoursemanager.management.roomservice.model.response.RoomServiceEWResponse;
-import com.edu.fpt.hoursemanager.management.roomservice.model.response.RoomServiceElectricWaterResponse;
 import com.edu.fpt.hoursemanager.management.roomservice.model.response.RoomServiceResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,13 +15,13 @@ import java.util.List;
 @Repository
 public interface RoomServiceRepository extends JpaRepository<RoomService, Long> {
     @Query("select new com.edu.fpt.hoursemanager.management.roomservice.model.response.RoomServiceResponse(rs.id, rs.name, r.id, r.name, c.roomRate, s.id, s.name, s.price, rs.status, rs.fromDate, rs.toDate,s.typePayment,b.id,rs.amount,rs.note,rs.total) " +
-            "from RoomService rs inner join rs.service s inner join rs.room r inner join r.renterRooms rr " +
-            "inner join rr.contract c inner join r.building b where rs.fromDate = :fromDate ")
+            "from RoomService rs left join rs.service s left join rs.room r left join r.renterRooms rr " +
+            "left join rr.contract c left join r.building b where rs.fromDate = :fromDate ")
     List<RoomServiceResponse> getAllRoomAndService(@Param("fromDate") Date fromDate);
 
     @Query("select new com.edu.fpt.hoursemanager.management.roomservice.model.response.RoomServiceResponse(rs.id, rs.name, r.id, r.name, c.roomRate, s.id, s.name, s.price, rs.status, rs.fromDate, rs.toDate, s.typePayment, b.id,rs.amount,rs.note,rs.total) " +
-            "from RoomService rs inner join rs.service s inner join rs.room r inner join r.renterRooms rr " +
-            "inner join rr.contract c inner join r.building b where r.id = :id and rs.fromDate = :fromDate")
+            "from RoomService rs left join rs.service s left join rs.room r left join r.renterRooms rr " +
+            "left join rr.contract c left join r.building b where r.id = :id and rs.fromDate = :fromDate")
     List<RoomServiceResponse> getAllServiceByRoom(@Param("id") Long id, @Param("fromDate") Date fromDate);
 
     @Query("select new com.edu.fpt.hoursemanager.management.roomservice.model.response.CheckRoomStatusResponse(r.id, rs.status, rs.fromDate, rs.toDate)  " +

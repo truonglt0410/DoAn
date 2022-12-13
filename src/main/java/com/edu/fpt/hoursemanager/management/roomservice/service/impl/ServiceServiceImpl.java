@@ -26,6 +26,11 @@ public class ServiceServiceImpl implements ServiceService {
     BuildingManageRepository buildingManageRepository;
 
     @Override
+    public ResponseEntity<ResponseModels> getAllServiceAllBuilding() {
+        return ResponseModels.success(serviceRepository.getAllServiceAllBuilding());
+    }
+
+    @Override
     public ResponseEntity<ResponseModels> getAllService() {
         return ResponseModels.success(serviceRepository.getAllService());
     }
@@ -122,5 +127,10 @@ public class ServiceServiceImpl implements ServiceService {
     @Override
     public ResponseEntity<ResponseModels> getAllServiceByIdBuilding(Long id) {
         return ResponseModels.success(serviceRepository.getAllServiceByIdBuilding(id));
+    }
+
+    @Override
+    public ResponseEntity<ResponseModels> getServiceById(Long id) {
+        return ResponseModels.success(serviceRepository.getServiceById(id));
     }
 }
