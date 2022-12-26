@@ -2,6 +2,7 @@ package com.edu.fpt.hoursemanager.management.contract.service.impl;
 
 import com.edu.fpt.hoursemanager.common.entity.AccountLoginCommon;
 import com.edu.fpt.hoursemanager.common.models.ResponseModels;
+import com.edu.fpt.hoursemanager.common.utils.Utils;
 import com.edu.fpt.hoursemanager.management.contact.entity.Contact;
 import com.edu.fpt.hoursemanager.management.contract.entity.Contract;
 import com.edu.fpt.hoursemanager.management.contract.entity.RenterRoom;
@@ -18,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,6 @@ public class ContractManageServiceImpl implements ContractManageService {
     @Autowired
     private RenterRoomRepository renterRoomRepository;
 
-    private final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
     private static final String CONTRACT_SERVICE = "Contract Management Services ";
 
     @Override
@@ -65,8 +64,8 @@ public class ContractManageServiceImpl implements ContractManageService {
                 for(ContractResponse contract : listContract){
                     if(contractDetailResponse.getId() == null){
                         contractDetailResponse.setId(contract.getId());
-                        contractDetailResponse.setFromDate(contract.getFromDate());
-                        contractDetailResponse.setToDate(contract.getToDate());
+                        contractDetailResponse.setFromDate(Utils.covertDateToString(contract.getFromDate()));
+                        contractDetailResponse.setToDate(Utils.covertDateToString(contract.getToDate()));
                         contractDetailResponse.setDeposit(contract.getDeposit());
                         contractDetailResponse.setRoomRate(contract.getRoomRate());
                         contractDetailResponse.setRoomPaymentCycle(contract.getRoomPaymentCycle());
@@ -81,6 +80,11 @@ public class ContractManageServiceImpl implements ContractManageService {
                     renter = new BasicRenterResponse();
                     renter.setId(contract.getRenterId());
                     renter.setName(contract.getRenterName());
+                    renter.setDob(Utils.covertDateToString(contract.getDob()));
+                    renter.setPhone(contract.getPhone());
+                    renter.setImageAfter(contract.getImageAfter());
+                    renter.setImageBefore(contract.getImageBefore());
+                    renter.setNumberId(contract.getNumberId());
                     if (!renters.contains(renter)){
                         renters.add(renter);
                     }
@@ -108,8 +112,8 @@ public class ContractManageServiceImpl implements ContractManageService {
                     contract.setRoomPaymentCycle(contractRequest.getRoomPaymentCycle());
                     contract.setCreatedBy(accountLoginCommon.getUserName());
                     contract.setCreatedDate(LocalDate.now());
-                    contract.setFromDate(contractRequest.getFromDate() != null ? SIMPLE_DATE_FORMAT.parse(contractRequest.getFromDate()) : null);
-                    contract.setToDate(contractRequest.getToDate() != null ? SIMPLE_DATE_FORMAT.parse(contractRequest.getToDate()) : null);
+                    contract.setFromDate(Utils.covertStringToDate(contractRequest.getFromDate()));
+                    contract.setToDate(Utils.covertStringToDate(contractRequest.getToDate()));
 
                     List<RenterRoom> renterRooms = getRenterRoom(contract, contractRequest.getRooms(),contractRequest.getContacts());
                     contract.setRenterRooms(renterRooms);
@@ -132,8 +136,8 @@ public class ContractManageServiceImpl implements ContractManageService {
             AccountLoginCommon accountLoginCommon = new AccountLoginCommon();
             if(accountLoginCommon.getUserName() != null){
                 Contract contract = contractManageRepository.getByContractId(updateContractRequest.getId());
-                contract.setFromDate(updateContractRequest.getFromDate()!= null ? SIMPLE_DATE_FORMAT.parse(updateContractRequest.getFromDate()) : null );
-                contract.setToDate(updateContractRequest.getToDate() != null ? SIMPLE_DATE_FORMAT.parse(updateContractRequest.getToDate()) : null);
+                contract.setFromDate(Utils.covertStringToDate(updateContractRequest.getFromDate()));
+                contract.setToDate(Utils.covertStringToDate(updateContractRequest.getToDate()));
                 contract.setDeposit(updateContractRequest.getDeposit());
                 contract.setRoomRate(updateContractRequest.getRoomRate());
                 contract.setRoomPaymentCycle(updateContractRequest.getRoomPaymentCycle());

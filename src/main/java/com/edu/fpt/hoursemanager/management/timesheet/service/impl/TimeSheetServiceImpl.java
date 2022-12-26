@@ -2,18 +2,18 @@ package com.edu.fpt.hoursemanager.management.timesheet.service.impl;
 
 import com.edu.fpt.hoursemanager.common.entity.AccountLoginCommon;
 import com.edu.fpt.hoursemanager.common.models.ResponseModels;
+import com.edu.fpt.hoursemanager.common.utils.Utils;
 import com.edu.fpt.hoursemanager.management.contact.entity.Contact;
 import com.edu.fpt.hoursemanager.management.contact.repository.ContactRepository;
-import com.edu.fpt.hoursemanager.management.directory.model.response.DirectoryResponse;
-import com.edu.fpt.hoursemanager.management.directory.model.response.MainDirectoryFilResponse;
-import com.edu.fpt.hoursemanager.management.directory.model.response.MainDirectoryResponse;
-import com.edu.fpt.hoursemanager.management.directory.model.response.SubDirectoryResponse;
 import com.edu.fpt.hoursemanager.management.timesheet.entity.TimeSheet;
 import com.edu.fpt.hoursemanager.management.timesheet.entity.Work;
 import com.edu.fpt.hoursemanager.management.timesheet.model.request.CreateTimeSheetRequest;
 import com.edu.fpt.hoursemanager.management.timesheet.model.request.EditTimeSheetRequest;
 import com.edu.fpt.hoursemanager.management.timesheet.model.request.GetAllTimeSheetRequest;
-import com.edu.fpt.hoursemanager.management.timesheet.model.response.*;
+import com.edu.fpt.hoursemanager.management.timesheet.model.response.GetTimeSheetAccountResponse;
+import com.edu.fpt.hoursemanager.management.timesheet.model.response.GetTimeSheetFinalResponse;
+import com.edu.fpt.hoursemanager.management.timesheet.model.response.GetTimeSheetFloorResponse;
+import com.edu.fpt.hoursemanager.management.timesheet.model.response.GetTimeSheetResponse;
 import com.edu.fpt.hoursemanager.management.timesheet.repository.TimeSheetRepository;
 import com.edu.fpt.hoursemanager.management.timesheet.repository.WorkRepository;
 import com.edu.fpt.hoursemanager.management.timesheet.service.TimeSheetService;
@@ -40,7 +40,10 @@ public class TimeSheetServiceImpl implements TimeSheetService {
 
     @Override
     public ResponseEntity<ResponseModels> getAllTimeSheet(GetAllTimeSheetRequest request) {
-        List<GetTimeSheetFloorResponse> getTimeSheetFloorResponse = timeSheetRepository.lsGetAllFloor(request.getStartDate(),request.getEndDate());
+        Date startDate = Utils.covertStringToDate(request.getStartDate());
+        Date endDate = Utils.covertStringToDate(request.getEndDate());
+
+        List<GetTimeSheetFloorResponse> getTimeSheetFloorResponse = timeSheetRepository.lsGetAllFloor(startDate,endDate);
 
         List<GetTimeSheetFinalResponse> responseList = new ArrayList<>();
 
@@ -115,7 +118,9 @@ public class TimeSheetServiceImpl implements TimeSheetService {
     @Override
     public ResponseEntity<ResponseModels> getAllTimeSheetByAccountLogin(GetAllTimeSheetRequest request) {
         AccountLoginCommon accountLoginCommon = new AccountLoginCommon();
-        List<GetTimeSheetFloorResponse> getTimeSheetFloorResponse = timeSheetRepository.lsGetAllTimeByAccount(request.getStartDate(),request.getEndDate(),accountLoginCommon.getUserName());
+        Date startDate = Utils.covertStringToDate(request.getStartDate());
+        Date endDate = Utils.covertStringToDate(request.getEndDate());
+        List<GetTimeSheetFloorResponse> getTimeSheetFloorResponse = timeSheetRepository.lsGetAllTimeByAccount(startDate,endDate,accountLoginCommon.getUserName());
 
         List<GetTimeSheetFinalResponse> responseList = new ArrayList<>();
 
@@ -198,13 +203,12 @@ public class TimeSheetServiceImpl implements TimeSheetService {
     @Override
     public ResponseEntity<ResponseModels> createTimeSheetForContact(CreateTimeSheetRequest createTimeSheetRequest) {
         AccountLoginCommon accountLoginCommon = new AccountLoginCommon();
-//        Contact contact = contactRepository.getAccountContactByEmail(accountLoginCommon.getUserName());
         Contact contact = contactRepository.getById(createTimeSheetRequest.getIdAccount());
 
-        Work work = workRepository.getById(createTimeSheetRequest.getIdRoom());
+        Work work = workRepository.getById(createTimeSheetRequest.getIdWork());
         TimeSheet timeSheet = new TimeSheet();
-        timeSheet.setTime(createTimeSheetRequest.getTime());
-        timeSheet.setCheckDone(false);
+        timeSheet.setTime(Utils.covertStringToDate(createTimeSheetRequest.getTime()));
+        timeSheet.setCheckDone(createTimeSheetRequest.isCheckDone());
         timeSheet.setNote(createTimeSheetRequest.getNote());
         timeSheet.setContact(contact);
         timeSheet.setWork(work);
@@ -216,18 +220,13 @@ public class TimeSheetServiceImpl implements TimeSheetService {
         Contact contact = contactRepository.getById(editTimeSheetRequest.getIdAccount());
 
         TimeSheet timeSheet = timeSheetRepository.getById(editTimeSheetRequest.getIdTimeSheet());
-        timeSheet.setTime(editTimeSheetRequest.getTime());
+        timeSheet.setTime(Utils.covertStringToDate(editTimeSheetRequest.getTime()));
         timeSheet.setCheckDone(editTimeSheetRequest.isCheckDone());
         timeSheet.setNote(editTimeSheetRequest.getNote());
         timeSheet.setContact(contact);
 
         Work work = workRepository.getById(editTimeSheetRequest.getIdWork());
-//        List<Work> works = new ArrayList<>();
-//        for (Long id:editTimeSheetRequest.getIdWork()) {
-//            Work work = new Work();
-//            work = workRepository.getById(id);
-//            works.add(work);
-//        }
+
         timeSheet.setWork(work);
 
         return ResponseModels.success(timeSheetRepository.save(timeSheet));

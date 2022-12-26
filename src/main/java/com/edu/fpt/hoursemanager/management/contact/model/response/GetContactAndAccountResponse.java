@@ -18,4 +18,7 @@ public class GetContactAndAccountResponse {
     private Boolean gender;
     private String address;
     private Boolean type;
+    private String numberId;
+    private String imageBefore;
+    private String imageAfter;
 }

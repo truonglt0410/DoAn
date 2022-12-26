@@ -17,4 +17,5 @@ public class CreateBuildingRequest {
     private String rulesImage;
     private Double longitude;
     private Double latitude;
+    private String imageName;
 }

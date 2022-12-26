@@ -10,4 +10,9 @@ import lombok.NoArgsConstructor;
 public class BasicRenterResponse {
     private Long id;
     private String name;
+    private String phone;
+    private String numberId;
+    private String imageBefore;
+    private String imageAfter;
+    private String dob;
 }

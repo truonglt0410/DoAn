@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,6 +13,6 @@ public class RoomServiceRequest {
     String date;
     String name;
     private double amount;
-    private Date fromDate;
+    private String fromDate;
     private String note;
 }

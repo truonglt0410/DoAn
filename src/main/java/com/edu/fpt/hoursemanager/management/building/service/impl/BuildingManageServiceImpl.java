@@ -56,7 +56,6 @@ public class BuildingManageServiceImpl implements BuildingManageService {
             return ResponseModels.error("Error Building Manage " + e.getMessage());
         }
         return ResponseModels.success(list);
-
     }
 
     @Override
@@ -71,6 +70,7 @@ public class BuildingManageServiceImpl implements BuildingManageService {
                 buildingResponse.setDescription(building.getDescription());
                 buildingResponse.setImage(building.getImage());
                 buildingResponse.setRulesImage(building.getRulesImage());
+                buildingResponse.setImageName(building.getImageName());
                 buildingResponse.setLongitude(building.getLongitude());
                 buildingResponse.setLatitude(building.getLatitude());
                 List<String> rules = new ArrayList<>();
@@ -110,6 +110,7 @@ public class BuildingManageServiceImpl implements BuildingManageService {
                     building.setModifiedBy(accountLoginCommon.getUserName());
                     building.setLongitude(createBuildingRequest.getLongitude());
                     building.setLatitude(createBuildingRequest.getLatitude());
+                    building.setImage(createBuildingRequest.getImageName());
                     // save rules and utilities to Building
                     utilitiesManageService.addUtilitiesToBuilding(building, createBuildingRequest.getRules(), createBuildingRequest.getUtilities());
                     Account account = accountService.getAccount(accountLoginCommon.getUserName());
@@ -151,6 +152,7 @@ public class BuildingManageServiceImpl implements BuildingManageService {
                 building.setModifiedBy(accountLoginCommon.getUserName());
                 building.setLongitude(updateBuildingRequest.getLongitude());
                 building.setLatitude(updateBuildingRequest.getLatitude());
+                building.setImageName(updateBuildingRequest.getImageName());
                 // save rules to Building
                 utilitiesManageService.addUtilitiesToBuilding(building, updateBuildingRequest.getRules(), updateBuildingRequest.getUtilities());
                 buildingManageRepository.save(building);

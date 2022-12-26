@@ -4,15 +4,10 @@ import com.edu.fpt.hoursemanager.common.models.ResponseModels;
 import com.edu.fpt.hoursemanager.management.timesheet.model.request.CreateTimeSheetRequest;
 import com.edu.fpt.hoursemanager.management.timesheet.model.request.EditTimeSheetRequest;
 import com.edu.fpt.hoursemanager.management.timesheet.model.request.GetAllTimeSheetRequest;
-import com.edu.fpt.hoursemanager.management.timesheet.model.request.WorkRequest;
 import com.edu.fpt.hoursemanager.management.timesheet.service.TimeSheetService;
-import com.edu.fpt.hoursemanager.management.timesheet.service.WorkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @RestController
 @RequestMapping(path = "/time-sheet")

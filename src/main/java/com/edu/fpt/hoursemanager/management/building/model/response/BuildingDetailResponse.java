@@ -20,4 +20,5 @@ public class BuildingDetailResponse {
     private String rulesImage;
     private Double longitude;
     private Double latitude;
+    private String imageName;
 }

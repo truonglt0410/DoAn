@@ -76,8 +76,28 @@ public class Security extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers(AUTH_WHITELIST).permitAll()
-                .antMatchers("/authentication/**").permitAll()
-                .antMatchers("/admin/**").hasAnyAuthority("CN")
+                .antMatchers( "/authentication/otp").hasAnyAuthority("CN","KH")
+                .antMatchers("/authentication/google", "/authentication/forgot", "/authentication/logout").permitAll()
+                .antMatchers("/authentication/register", "/authentication/change-password").hasAnyAuthority("CN","KH")
+
+                .antMatchers("/admin/building/add", "/admin/building/update", "/admin/building/delete"
+                        , "/room/add", "/room/delete", "/room/type/update", "/authentication/register-employee"
+                        , "/admin/delete", "/room/type/create").hasAnyAuthority("CN")
+
+                .antMatchers("/room/update", "/service/delete", "/service/add", "/service/update"
+                        , "/asset/get-all", "/asset/delete", "/asset/type/get-all", "/asset/type/delete", "/vehicle/add"
+                        , "/vehicle/delete", "/contract/add", "/contract/update", "/contract/delete", "/contract/get-all"
+                        , "/time-sheet/create", "/work/add", "/time-sheet/delete", "/issue/get-all-by-building"
+                        , "/issue/get-all-by-status", "/room-service/change-status", "/asset/add", "/asset/update"
+                        , "/room-service/add", "/contact/add", "/contact/delete").hasAnyAuthority("CN", "QL")
+                .antMatchers("/time-sheet/get-all-my-self").hasAnyAuthority( "QL", "NV")
+
+                .antMatchers( "/contract/get-detail", "/time-sheet/get-all", "/work/get-all", "/time-sheet/edit"
+                        , "/issue/get-all-by-room", "/issue/get-all-by-email", "/issue/get-detail", "/issue/add", "/issue/update"
+                        , "/issue/delete", "/room-service/get-all", "/room-service/get-detail", "/service/get-all-by-building-id"
+                        , "/room-service/get-electric-water-by-building-and-date", "/service/get-service-by-id/**"
+                        , "/service/get-all-service-all-building", "/vehicle/edit").hasAnyAuthority("CN", "QL", "KH")
+                .antMatchers( "/contact/edit").hasAnyAuthority("CN", "QL", "NV")
                 .anyRequest().authenticated()
                 .and().formLogin()
                 .loginPage("/signin").permitAll()

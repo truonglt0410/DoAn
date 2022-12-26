@@ -18,6 +18,11 @@ public class ContractResponse {
     private int roomPaymentCycle;
     private Long renterId;
     private String renterName;
+    private String phone;
+    private String numberId;
+    private String imageBefore;
+    private String imageAfter;
+    private Date dob;
     private Long roomId;
     private String roomName;
     private String buildingName;

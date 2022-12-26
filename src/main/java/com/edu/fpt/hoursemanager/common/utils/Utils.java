@@ -3,12 +3,13 @@ package com.edu.fpt.hoursemanager.common.utils;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.edu.fpt.hoursemanager.config.oauth2.OAuth2UserCustom;
-import com.edu.fpt.hoursemanager.exceptions.HouseManagerExceptions;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
+import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -75,5 +76,25 @@ public class Utils {
         String result = "";
         result = RandomStringUtils.random(20, true, true);
         return result;
+    }
+
+    public static Date covertStringToDate(String dateString ){
+        Date date = null;
+        try{
+            date = StringUtils.isNotEmpty(dateString) ?  Const.SIMPLE_DATE_FORMAT.parse(dateString) : null;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+    public static String covertDateToString(Date dateString ){
+        String date = "";
+        try{
+            date = dateString != null ?  Const.SIMPLE_DATE_FORMAT.format(dateString) : null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return date;
     }
 }

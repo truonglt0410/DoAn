@@ -13,8 +13,8 @@ import java.util.List;
 @Repository
 public interface BuildingManageRepository extends JpaRepository<Building, Long> {
 
-    @Query("select new com.edu.fpt.hoursemanager.management.building.model.response.BuildingResponse(b.id, b.name, b.address, b.image, b.longitude, b.latitude,ab.id) "+
-            "from Building b inner join b.accounts ab where ab.email = :email and b.deleted = false")
+    @Query("select new com.edu.fpt.hoursemanager.management.building.model.response.BuildingResponse(b.id, b.name, b.address, b.image, b.longitude, b.latitude,ab.id,b.imageName) "+
+            " from Building b inner join b.accounts ab where ab.email = :email and b.deleted = false")
     List<BuildingResponse> getAllBuildingByAccountId(@Param("email") String email);
 
     @Query("select new com.edu.fpt.hoursemanager.management.building.model.response.UtilitiesResponse(bu.name, bu.type) " +

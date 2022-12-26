@@ -59,4 +59,9 @@ public class RoomController {
         return roomService.deleteRoom(id);
     }
 
+    @GetMapping("/get-detail-by-id")
+    public ResponseEntity<ResponseModels> viewDetailRoomById(@RequestParam Long id) {
+        return roomService.viewDetailRoomById(id);
+    }
+
 }

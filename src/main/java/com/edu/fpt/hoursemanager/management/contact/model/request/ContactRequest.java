@@ -14,4 +14,7 @@ public class ContactRequest {
     private String gender;
     private String address;
     private Boolean type;
+    private String numberId;
+    private String imageBefore;
+    private String imageAfter;
 }

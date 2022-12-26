@@ -5,6 +5,7 @@ import com.edu.fpt.hoursemanager.common.models.ResponseModels;
 import com.edu.fpt.hoursemanager.management.contract.entity.Contract;
 import com.edu.fpt.hoursemanager.management.contract.entity.Vehicle;
 import com.edu.fpt.hoursemanager.management.contract.model.request.AddVehicleRequest;
+import com.edu.fpt.hoursemanager.management.contract.model.request.EditVehicleRequest;
 import com.edu.fpt.hoursemanager.management.contract.model.response.VehicleResponse;
 import com.edu.fpt.hoursemanager.management.contract.reposiotry.VehicleManageRepository;
 import com.edu.fpt.hoursemanager.management.contract.service.VehicleManageService;
@@ -81,5 +82,47 @@ public class VehicleMangeServiceImpl implements VehicleManageService {
             return ResponseModels.error(VEHICLE_SERVICE+": " + e.getMessage());
         }
         return ResponseModels.success("Delete Vehicle Success.");
+    }
+
+    @Override
+    public ResponseEntity<ResponseModels> editVehicle(EditVehicleRequest request) {
+        try {
+            AccountLoginCommon accountLoginCommon = new AccountLoginCommon();
+            if (accountLoginCommon.getUserName() != null) {
+                Vehicle vehicle = vehicleManageRepository.getVehicleById(request.getIdVehicle());
+                vehicle.setColor(request.getColor());
+                vehicle.setName(request.getName());
+                vehicle.setNumberPlate(request.getNumberPlate());
+                vehicle.setType(request.getType());
+
+                vehicle.setModifiedBy(accountLoginCommon.getUserName());
+                vehicle.setModifiedDate(LocalDate.now());
+
+                Contract contract = new Contract();
+                contract.setId(request.getContractId());
+                vehicle.setContract(contract);
+
+                vehicleManageRepository.save(vehicle);
+            }
+        } catch (Exception e) {
+            return ResponseModels.error(VEHICLE_SERVICE+": " + e.getMessage());
+        }
+        return ResponseModels.success("Edit Vehicle Success.");
+    }
+
+    @Override
+    public ResponseEntity<ResponseModels> getAllVehicleByRoomId(Long id) {
+        List<VehicleResponse> vehicles;
+        try {
+            AccountLoginCommon accountLoginCommon = new AccountLoginCommon();
+            if (accountLoginCommon.getUserName() != null) {
+                vehicles = vehicleManageRepository.getAllVehicleByRoomId(id);
+            } else {
+                return ResponseModels.unauthorized();
+            }
+        } catch (Exception e) {
+            return ResponseModels.error(VEHICLE_SERVICE+": " + e.getMessage());
+        }
+        return ResponseModels.success(vehicles);
     }
 }

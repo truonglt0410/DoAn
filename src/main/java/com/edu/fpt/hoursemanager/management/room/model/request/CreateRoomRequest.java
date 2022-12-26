@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class CreateRoomRequest {
     private String name;
     private String typeRoom;
+    private String roomImage;
     private Long typeRoomId;
     private Long buildingId;
 }
