@@ -18,4 +18,7 @@ public class ContactRoleResponse {
     private String address;
     private String emailAccount;
     private String role;
+    private String numberId;
+    private String imageBefore;
+    private String imageAfter;
 }

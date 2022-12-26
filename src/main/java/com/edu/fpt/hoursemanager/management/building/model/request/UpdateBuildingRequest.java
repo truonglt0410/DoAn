@@ -18,4 +18,5 @@ public class UpdateBuildingRequest {
     private String rulesImage;
     private Double longitude;
     private Double latitude;
+    private String imageName;
 }

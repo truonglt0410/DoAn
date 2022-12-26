@@ -15,4 +15,5 @@ public class BuildingResponse {
     private Double longitude;
     private Double latitude;
     private Long accountId;
+    private String imageName;
 }

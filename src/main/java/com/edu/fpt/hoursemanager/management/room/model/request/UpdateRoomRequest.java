@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class UpdateRoomRequest {
     private Long idRoom;
     private String nameRoom;
+    private String roomImage;
     private String codeTypeRoom;
     private Long idTypeRoom;
     private Long idBuilding;

@@ -2,6 +2,7 @@ package com.edu.fpt.hoursemanager.management.roomservice.service.impl;
 
 import com.edu.fpt.hoursemanager.common.entity.AccountLoginCommon;
 import com.edu.fpt.hoursemanager.common.models.ResponseModels;
+import com.edu.fpt.hoursemanager.common.utils.Utils;
 import com.edu.fpt.hoursemanager.management.room.entity.Room;
 import com.edu.fpt.hoursemanager.management.roomservice.entity.RoomService;
 import com.edu.fpt.hoursemanager.management.roomservice.model.request.RoomServiceRequest;
@@ -15,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -24,8 +24,6 @@ import java.util.*;
 public class RoomServiceManageImpl implements RoomServiceManage {
     @Autowired
     private RoomServiceRepository roomServiceRepository;
-
-    private static SimpleDateFormat SIMPLE_DATE = new SimpleDateFormat("dd-MM-yyyy");
 
     @Autowired
     private ServiceRepository serviceRepository;
@@ -40,7 +38,7 @@ public class RoomServiceManageImpl implements RoomServiceManage {
         try {
 
             Calendar calendar = Calendar.getInstance();
-            calendar.setTime(SIMPLE_DATE.parse(date));
+            calendar.setTime(Utils.covertStringToDate(date));
             Date fromDate;
             if(calendar.get(Calendar.DAY_OF_MONTH) >4){
                 calendar.set(Calendar.DAY_OF_MONTH, 5);
@@ -97,7 +95,7 @@ public class RoomServiceManageImpl implements RoomServiceManage {
         Double sumPrice = 0.0;
         try{
             Calendar calendar = Calendar.getInstance();
-            calendar.setTime(SIMPLE_DATE.parse(date));
+            calendar.setTime(Utils.covertStringToDate(date));
             Date fromDate;
             if(calendar.get(Calendar.DAY_OF_MONTH) >4){
                 calendar.set(Calendar.DAY_OF_MONTH, 5);
@@ -131,8 +129,9 @@ public class RoomServiceManageImpl implements RoomServiceManage {
                         salaryResponse.setSumPrice(sumPrice);
                     }
                 }
-                if(salaryResponse != null)
-                salaryResponse.setServiceList(serviceResponse);
+                if(salaryResponse != null) {
+                    salaryResponse.setServiceList(serviceResponse);
+                }
             }
         }catch (Exception e){
             return ResponseModels.error("Room Service Manage Error : " + e.getMessage());
@@ -144,7 +143,7 @@ public class RoomServiceManageImpl implements RoomServiceManage {
     public ResponseEntity<ResponseModels> changeStatusServices(Long id, String date,Boolean status) {
         try {
             Calendar calendar = Calendar.getInstance();
-            calendar.setTime(SIMPLE_DATE.parse(date));
+            calendar.setTime(Utils.covertStringToDate(date));
             Date fromDate;
             if(calendar.get(Calendar.DAY_OF_MONTH) >4){
                 calendar.set(Calendar.DAY_OF_MONTH, 5);
@@ -174,7 +173,7 @@ public class RoomServiceManageImpl implements RoomServiceManage {
         try{
             AccountLoginCommon accountLoginCommon = new AccountLoginCommon();
             Calendar calendar = Calendar.getInstance();
-            calendar.setTime(SIMPLE_DATE.parse(roomServiceRequest.getDate()));
+            calendar.setTime(Utils.covertStringToDate(roomServiceRequest.getDate()));
             Date fromDate;
             Date toDate;
             if(calendar.get(Calendar.DAY_OF_MONTH) >4){
@@ -227,26 +226,8 @@ public class RoomServiceManageImpl implements RoomServiceManage {
         List<RoomServiceElectricWaterResponse> responseList = new ArrayList<>();
 
         try {
-//            Calendar calendar = Calendar.getInstance();
-//            calendar.setTime(SIMPLE_DATE.parse(date));
-//            Date fromDate;
-//            Date toDate;
-//            if(calendar.get(Calendar.DAY_OF_MONTH) >4){
-//                calendar.set(Calendar.DAY_OF_MONTH, 5);
-//                fromDate = calendar.getTime();
-//
-//                calendar.add(Calendar.MONTH, 1);
-//                calendar.set(Calendar.DAY_OF_MONTH, 4);
-//                toDate=calendar.getTime();
-//            }else{
-//                calendar.set(Calendar.DAY_OF_MONTH, 4);
-//                toDate = calendar.getTime();
-//                calendar.set(Calendar.DAY_OF_MONTH, 5);
-//                calendar.add(Calendar.MONTH, -1);
-//                fromDate = calendar.getTime();
-//            }
-            Date fromDate1 =new SimpleDateFormat("yyyy-MM-dd").parse(fromDate);
-            Date toDate1 =new SimpleDateFormat("yyyy-MM-dd").parse(toDate);
+            Date fromDate1 = Utils.covertStringToDate(fromDate);
+            Date toDate1 = Utils.covertStringToDate(toDate);
             List<RoomServiceEWResponse> lsElectric = roomServiceRepository.getRoomServiceElectricByBuildingAndDate(id,fromDate1, toDate1);
             List<RoomServiceEWResponse> lsWater = roomServiceRepository.getRoomServiceWaterByBuildingAndDate(id,fromDate1, toDate1);
             for(RoomServiceEWResponse lsE : lsElectric){
@@ -258,21 +239,19 @@ public class RoomServiceManageImpl implements RoomServiceManage {
                         response.setNameBuilding(lsE.getNameBuilding());
                         response.setNameRoom(lsE.getNameRoom());
 
-                        response.setDateIncome(lsE.getDateIncome()+"");
+                        response.setDateIncome(Utils.covertDateToString(lsE.getDateIncome()));
 
                         responseList.add(response);
                     }else {
                         RoomServiceElectricWaterResponse responseE = new RoomServiceElectricWaterResponse();
                         responseE.setAmountElectric("E" + String.valueOf(lsE.getAmount()));
-//                        responseE.setAmountWater(String.valueOf(lsW.getAmount()));
                         responseE.setNameBuilding(lsE.getNameBuilding());
                         responseE.setNameRoom(lsE.getNameRoom());
 
-                        responseE.setDateIncome(lsE.getDateIncome()+"");
+                        responseE.setDateIncome(Utils.covertDateToString(lsE.getDateIncome()));
                         responseList.add(responseE);
 
                         RoomServiceElectricWaterResponse responseW = new RoomServiceElectricWaterResponse();
-//                        responseW.setAmountElectric(String.valueOf(lsE.getAmount()));
                         responseW.setAmountWater("W"+String.valueOf(lsW.getAmount()));
                         responseW.setNameBuilding(lsE.getNameBuilding());
                         responseW.setNameRoom(lsE.getNameRoom());
@@ -287,5 +266,6 @@ public class RoomServiceManageImpl implements RoomServiceManage {
         }
         return ResponseModels.success(responseList);
     }
+
 
 }

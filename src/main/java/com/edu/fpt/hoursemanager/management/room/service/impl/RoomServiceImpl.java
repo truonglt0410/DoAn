@@ -9,8 +9,7 @@ import com.edu.fpt.hoursemanager.management.room.entity.TypeRoom;
 import com.edu.fpt.hoursemanager.management.room.model.request.AddAssetToRoomRequest;
 import com.edu.fpt.hoursemanager.management.room.model.request.CreateRoomRequest;
 import com.edu.fpt.hoursemanager.management.room.model.request.UpdateRoomRequest;
-import com.edu.fpt.hoursemanager.management.room.model.response.GetRoomBuildingResponse;
-import com.edu.fpt.hoursemanager.management.room.model.response.GetRoomByBuildingAndContact;
+import com.edu.fpt.hoursemanager.management.room.model.response.*;
 import com.edu.fpt.hoursemanager.management.room.repository.RoomRepository;
 import com.edu.fpt.hoursemanager.management.room.repository.TypeRoomRepository;
 import com.edu.fpt.hoursemanager.management.room.service.RoomService;
@@ -51,6 +50,7 @@ public class RoomServiceImpl implements RoomService {
             Building building = new Building();
             building.setId(createRoomRequest.getBuildingId());
             room.setName(createRoomRequest.getName());
+            room.setRoomImage(createRoomRequest.getRoomImage());
             room.setCodeTypeRoom(createRoomRequest.getTypeRoom());
             room.setBuilding(building);
             roomRepository.save(room);
@@ -76,6 +76,7 @@ public class RoomServiceImpl implements RoomService {
                     roomByBuildingAndContact.setBuildingName(roomBuilding.getBuildingName());
                     roomByBuildingAndContact.setCodeTypeRoom(roomBuilding.getCodeTypeRoom());
                     roomByBuildingAndContact.setCapacity(roomBuilding.getCapacity());
+                    roomByBuildingAndContact.setPrice(roomBuilding.getPrice());
                     int status = 0;
                     if (roomBuilding.getContactId() != null) {
                         status++;
@@ -106,6 +107,7 @@ public class RoomServiceImpl implements RoomService {
             room.setId(updateRoomRequest.getIdRoom());
 
             room.setName(updateRoomRequest.getNameRoom());
+            room.setRoomImage(updateRoomRequest.getRoomImage());
             room.setCodeTypeRoom(updateRoomRequest.getCodeTypeRoom());
             TypeRoom typeRoom = new TypeRoom();
             typeRoom.setId(updateRoomRequest.getIdTypeRoom());
@@ -153,50 +155,55 @@ public class RoomServiceImpl implements RoomService {
     public ResponseEntity<ResponseModels> addAssetToRoom(AddAssetToRoomRequest addAssetToRoomRequest) {
         try {
             List<Assets> oldAssetsList = assetRepository.getAllAssetByRoom(addAssetToRoomRequest.getRoomId());
-            if(oldAssetsList != null){
-                for(Assets assets : oldAssetsList){
+            if (oldAssetsList != null) {
+                for (Assets assets : oldAssetsList) {
                     assets.setRoom(null);
                 }
             }
             List<Assets> newAssetList = assetRepository.getAllAssetById(addAssetToRoomRequest.getAssetId());
             Room room;
-            if(newAssetList!=null){
-                for(Assets assets : newAssetList){
+            if (newAssetList != null) {
+                for (Assets assets : newAssetList) {
                     room = new Room();
                     room.setId(addAssetToRoomRequest.getRoomId());
                     assets.setRoom(room);
                 }
             }
             assetRepository.saveAll(newAssetList);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseModels.success(e.getMessage());
         }
         return ResponseModels.success("Add Assets to Room success");
     }
 
-//    @Override
-//    public ResponseEntity<ResponseModels> getAllRoomDetail() {
-//        List<RoomResponse> getRoomResponses = roomRepository.getAllRoomDetail();
-//        List<GetRoomFinalResponse> getRoomFinalResponses = new ArrayList<>();
-//        //logic
-//        for(RoomResponse getRoomResponse : getRoomResponses){
-//            // n?u t?n t?i building th�  add th�m name room
-//            int index = getRoomFinalResponses.indexOf(
-//                    new GetRoomFinalResponse(getRoomResponse.getNameRoom(),getRoomResponse.getIdRoom(),getRoomResponse.getIdRoom(),getRoomResponse.getCodeTypeRoom(),getRoomResponse.getNameRoom(),null));
-//            if(index != -1){
-//                GetRoomFinalResponse getRoomFinalResponse =
-//                        new GetRoomFinalResponse(getRoomResponse.getNameBuilding(),getRoomResponse.getIdBuilding(),getRoomResponse.getIdRoom(),getRoomResponse.getCodeTypeRoom(),getRoomResponse.getNameRoom(), getRoomFinalResponses.get(index).getDataRoom());
-//                getRoomFinalResponse.addDataRoom(getRoomResponse.getIdRoom(),getRoomResponse.getNameRoom(),getRoomResponse.getCodeTypeRoom());
-//                getRoomFinalResponses.set(index,getRoomFinalResponse);
-//            }else{
-//                GetRoomFinalResponse getRoomFinalResponse =
-//                        new GetRoomFinalResponse(getRoomResponse.getNameBuilding(),getRoomResponse.getIdBuilding(),getRoomResponse.getIdRoom(), getRoomResponse.getCodeTypeRoom(),getRoomResponse.getNameRoom(),null);
-//                getRoomFinalResponse.addDataRoom(getRoomResponse.getIdRoom(),getRoomResponse.getNameRoom(),getRoomResponse.getCodeTypeRoom());
-//                getRoomFinalResponses.add(getRoomFinalResponse);
-//            }
-//        }
-//        return ResponseModels.success(getRoomFinalResponses);
-//    }
+    // @Override
+    // public ResponseEntity<ResponseModels> getAllRoomDetail() {
+    // List<RoomResponse> getRoomResponses = roomRepository.getAllRoomDetail();
+    // List<GetRoomFinalResponse> getRoomFinalResponses = new ArrayList<>();
+    // //logic
+    // for(RoomResponse getRoomResponse : getRoomResponses){
+    // // n?u t?n t?i building th� add th�m name room
+    // int index = getRoomFinalResponses.indexOf(
+    // new
+    // GetRoomFinalResponse(getRoomResponse.getNameRoom(),getRoomResponse.getIdRoom(),getRoomResponse.getIdRoom(),getRoomResponse.getCodeTypeRoom(),getRoomResponse.getNameRoom(),null));
+    // if(index != -1){
+    // GetRoomFinalResponse getRoomFinalResponse =
+    // new
+    // GetRoomFinalResponse(getRoomResponse.getNameBuilding(),getRoomResponse.getIdBuilding(),getRoomResponse.getIdRoom(),getRoomResponse.getCodeTypeRoom(),getRoomResponse.getNameRoom(),
+    // getRoomFinalResponses.get(index).getDataRoom());
+    // getRoomFinalResponse.addDataRoom(getRoomResponse.getIdRoom(),getRoomResponse.getNameRoom(),getRoomResponse.getCodeTypeRoom());
+    // getRoomFinalResponses.set(index,getRoomFinalResponse);
+    // }else{
+    // GetRoomFinalResponse getRoomFinalResponse =
+    // new
+    // GetRoomFinalResponse(getRoomResponse.getNameBuilding(),getRoomResponse.getIdBuilding(),getRoomResponse.getIdRoom(),
+    // getRoomResponse.getCodeTypeRoom(),getRoomResponse.getNameRoom(),null);
+    // getRoomFinalResponse.addDataRoom(getRoomResponse.getIdRoom(),getRoomResponse.getNameRoom(),getRoomResponse.getCodeTypeRoom());
+    // getRoomFinalResponses.add(getRoomFinalResponse);
+    // }
+    // }
+    // return ResponseModels.success(getRoomFinalResponses);
+    // }
 
     public List<String> stringToList(String name) {
         List<String> list = new ArrayList<>();
@@ -207,5 +214,31 @@ public class RoomServiceImpl implements RoomService {
             }
         }
         return list;
+    }
+
+    @Override
+    public ResponseEntity<ResponseModels> viewDetailRoomById(Long id) {
+        DetailRoomResponseApi detailRoomResponseApi = new DetailRoomResponseApi();
+        try {
+            List<DetailRoomResponseFromQuery> detailRoomsQuery = roomRepository.viewDetailRoomById(id);
+            List<DetailAssetsResponse> assets = new ArrayList<>();
+            for (DetailRoomResponseFromQuery item : detailRoomsQuery) {
+                if (detailRoomResponseApi.getId() == null) {
+                    detailRoomResponseApi.setId(item.getId());
+                    detailRoomResponseApi.setRoomName(item.getRoomName());
+                    detailRoomResponseApi.setBuildingName(item.getBuildingName());
+                    detailRoomResponseApi.setTypeRoomName(item.getTypeRoomName());
+                    detailRoomResponseApi.setCapacity(item.getCapacity());
+                    detailRoomResponseApi.setDeposit(item.getDeposit());
+                    detailRoomResponseApi.setPrice(item.getPrice());
+                    detailRoomResponseApi.setRoomArea(item.getRoomArea());
+                }
+                assets.add(new DetailAssetsResponse(item.getAssetsName(), item.getColor(), item.getModel()));
+            }
+            detailRoomResponseApi.setAssets(assets);
+        } catch (Exception e) {
+            return ResponseModels.error("Room Management Services "+ ": " + e.getMessage());
+        }
+        return ResponseModels.success(detailRoomResponseApi);
     }
 }

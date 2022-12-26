@@ -15,10 +15,10 @@ public interface ContactRepository extends JpaRepository<Contact, Long> {
     @Query("select  c from Contact c inner  join c.account a where a.email = :email")
     Contact getAccountContactByEmail(@Param("email") String email);
 
-    @Query("select new com.edu.fpt.hoursemanager.management.contact.model.response.ContactRoleResponse(c.id, c.fullName, c.phone, c.dob, c.gender, c.address, a.email, r.name) " +
+    @Query("select new com.edu.fpt.hoursemanager.management.contact.model.response.ContactRoleResponse(c.id, c.fullName, c.phone, c.dob, c.gender, c.address, a.email, r.name, c.numberId, c.imageBefore, c.imageAfter) " +
             "from Contact c inner join c.account a inner join a.roles r where a.email = :email")
     List<ContactRoleResponse> getContactWithRole(@Param("email") String email);
 
-    @Query("select new com.edu.fpt.hoursemanager.management.contact.model.response.GetContactAndAccountResponse(a.email,a.password,c.fullName,c.phone,c.dob,c.gender,c.address,c.type) from Contact c inner  join c.account a where a.email = :email and c.deleted = false and a.deleted = false ")
+    @Query("select new com.edu.fpt.hoursemanager.management.contact.model.response.GetContactAndAccountResponse(a.email,a.password,c.fullName,c.phone,c.dob,c.gender,c.address,c.type, c.numberId, c.imageBefore, c.imageAfter) from Contact c inner  join c.account a where a.email = :email and c.deleted = false and a.deleted = false ")
     GetContactAndAccountResponse getAccountAndContactByEmail(@Param("email") String email);
 }

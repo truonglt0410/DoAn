@@ -10,4 +10,6 @@ public interface TypeAssetService {
     ResponseEntity<ResponseModels> createTypeAssets(TypeAssetRequest request);
 
     ResponseEntity<ResponseModels> deleteTypeAsset(Long id);
+
+    ResponseEntity<ResponseModels> updateTypeAsset(TypeAssetRequest typeAssetRequest);
 }

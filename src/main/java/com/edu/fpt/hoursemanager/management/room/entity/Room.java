@@ -19,6 +19,7 @@ import java.util.Collection;
 public class Room extends EntityCommon {
     private String name;
     private String codeTypeRoom;
+    private String roomImage;
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
     private Collection<RenterRoom> renterRooms;

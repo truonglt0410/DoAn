@@ -36,4 +36,9 @@ public class ContactController {
     public ResponseEntity<ResponseModels> getAccountAndContactByEmail(@RequestParam String email){
         return contactService.getContactAndAccountByEmail(email);
     }
+
+    @DeleteMapping(value = "/delete")
+    public ResponseEntity<ResponseModels> deleteContact(@RequestParam Long id){
+        return contactService.deleteContact(id);
+    }
 }

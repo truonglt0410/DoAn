@@ -13,10 +13,10 @@ import java.util.List;
 @Repository
 public interface ContractManageRepository extends JpaRepository<Contract, Long> {
     @Query("select new com.edu.fpt.hoursemanager.management.contract.model.response.BasicContractResponse(c.id, co.fullName, co.phone, rb.name,room.name) " +
-            "from Contract c inner join c.renterRooms cr inner join cr.contact co inner join cr.room room inner join room.building rb inner join co.account ac where c.deleted = false and ac.email = :email")
+            "from Contract c inner join c.renterRooms cr inner join cr.contact co inner join cr.room room inner join room.building rb inner join rb.accounts ac where c.deleted = false and ac.email = :email")
     List<BasicContractResponse> getAllContract(@Param("email") String email);
 
-    @Query("select new com.edu.fpt.hoursemanager.management.contract.model.response.ContractResponse(c.id, c.fromDate, c.toDate, c.deposit,c.roomRate, c.roomPaymentCycle,co.id, co.fullName, room.id, room.name, rb.name) " +
+    @Query("select new com.edu.fpt.hoursemanager.management.contract.model.response.ContractResponse(c.id, c.fromDate, c.toDate, c.deposit,c.roomRate, c.roomPaymentCycle,co.id, co.fullName, co.phone, co.numberId, co.imageBefore, co.imageAfter, co.dob, room.id, room.name, rb.name) " +
             "from Contract c inner join c.renterRooms cr inner join cr.contact co inner join cr.room room inner join room.building rb where c.deleted = false and c.id = :id")
     List<ContractResponse> getDetailContract(@Param("id") Long id);
 

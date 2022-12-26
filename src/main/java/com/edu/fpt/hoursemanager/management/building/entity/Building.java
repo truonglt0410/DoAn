@@ -23,6 +23,7 @@ public class Building extends EntityCommon {
     private String rulesImage;
     private Double longitude;
     private Double latitude;
+    private String imageName;
 
     public Building(String name, String address, String image, String description) {
         this.name = name;

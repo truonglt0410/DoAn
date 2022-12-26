@@ -55,7 +55,7 @@ public class HourseManagerApplication implements CommandLineRunner {
 		fileService.init();
 		log.info("----------------- Start system");
 		log.info("----------------- Inser Role");
-		List<Role> roleList =  List.of(new Role("KH", "Khách Hàng"),new Role("CN", "Chủ Nhà"));
+		List<Role> roleList =  List.of(new Role("CN", "Chủ Nhà"), new Role("KH", "Khách Hàng"), new Role("QL", "Quản Lý"), new Role("NV", "Nhân Viên"));
 		List<Role> rolesAfterSave = roleService.saveRole(roleList);
 		List<Building> buildingList = List.of(new Building("name","address", "image", "description", "rulesImage"));
 		rolesAfterSave.stream().forEach(System.out::println);

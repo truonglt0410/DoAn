@@ -20,7 +20,7 @@ public interface ServiceRepository extends JpaRepository<Service, Long> {
     @Query("select new com.edu.fpt.hoursemanager.management.roomservice.model.response.ServiceResponse(s.id,s.name,s.price,s.typePayment,b.id) from Service s inner join s.roomServices rs inner join rs.room r inner join r.building b where s.deleted = false ")
     List<ServiceResponse> getAllService();
 
-    @Query("select new com.edu.fpt.hoursemanager.management.roomservice.model.response.ServiceResponse(s.id,s.name,s.price,s.typePayment,b.id) from Service s inner join s.roomServices rs inner join rs.room r inner join r.building b where s.deleted = false and r.deleted = false and r.id = :id")
+    @Query("select new com.edu.fpt.hoursemanager.management.roomservice.model.response.ServiceResponse(s.id,s.name,s.price,s.typePayment,s.id) from Service s left join s.roomServices rs inner join rs.room r inner join r.building b where s.deleted = false and r.deleted = false and r.id = :id")
     List<ServiceResponse> getAllServiceByRoom(@Param("id") Long id);
 
     @Query("select new com.edu.fpt.hoursemanager.management.roomservice.model.response.ServiceResponse(s.id,s.name,s.price,s.typePayment,b.id) from Service s inner join s.roomServices rs inner join rs.room r inner join r.building b where s.deleted = false and s.id = :id")

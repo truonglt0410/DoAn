@@ -2,6 +2,7 @@ package com.edu.fpt.hoursemanager.management.contact.service.impl;
 
 import com.edu.fpt.hoursemanager.common.entity.AccountLoginCommon;
 import com.edu.fpt.hoursemanager.common.models.ResponseModels;
+import com.edu.fpt.hoursemanager.common.utils.Utils;
 import com.edu.fpt.hoursemanager.management.account.repository.AccountRepository;
 import com.edu.fpt.hoursemanager.management.contact.entity.Contact;
 import com.edu.fpt.hoursemanager.management.contact.model.request.ContactRequest;
@@ -10,14 +11,11 @@ import com.edu.fpt.hoursemanager.management.contact.model.response.ContactRoleRe
 import com.edu.fpt.hoursemanager.management.contact.repository.ContactRepository;
 import com.edu.fpt.hoursemanager.management.contact.service.ContactService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,10 +41,12 @@ public class ContactServiceImpl implements ContactService {
                 contactResponse.setId(contactRoleResponses.get(0).getId());
                 contactResponse.setFullName(contactRoleResponses.get(0).getFullName());
                 contactResponse.setPhone(contactRoleResponses.get(0).getPhone());
-                contactResponse.setDob(contactRoleResponses.get(0).getDob() != null ?
-                        new SimpleDateFormat("dd-MM-yyyy").format(contactRoleResponses.get(0).getDob()) : null);
+                contactResponse.setDob(Utils.covertDateToString(contactRoleResponses.get(0).getDob()));
                 contactResponse.setGender(contactRoleResponses.get(0).getGender());
                 contactResponse.setAddress(contactRoleResponses.get(0).getAddress());
+                contactResponse.setImageAfter(contactRoleResponses.get(0).getImageAfter());
+                contactResponse.setImageBefore(contactRoleResponses.get(0).getImageBefore());
+                contactResponse.setNumberId(contactRoleResponses.get(0).getNumberId());
                 contactResponse.setEmailAccount(accountLoginCommon.getUserName());
                 Set<String> roleSet = new HashSet<>();
                 for (ContactRoleResponse contact : contactRoleResponses) {
@@ -68,19 +68,28 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
+    public ResponseEntity<ResponseModels> deleteContact(Long id) {
+        Contact contact = contactRepository.getById(id);
+        contact.setDeleted(true);
+        return ResponseModels.success(contactRepository.save(contact));
+    }
+
+    @Override
     public ResponseEntity<ResponseModels> addContact(ContactRequest contactRequest) {
         Contact contact = new Contact();
         AccountLoginCommon accountLoginCommon = new AccountLoginCommon();
         try {
             contact.setFullName(contactRequest.getFullName());
             contact.setPhone(contactRequest.getPhone());
-            contact.setDob(StringUtils.isNotEmpty(contactRequest.getDob()) ?
-                    new SimpleDateFormat("dd-MM-yyyy").parse(contactRequest.getDob()) : null);
+            contact.setDob(Utils.covertStringToDate(contactRequest.getDob()));
             contact.setGender(Boolean.valueOf(contactRequest.getGender()));
             contact.setAddress(contactRequest.getAddress());
             contact.setType(contactRequest.getType());
             contact.setCreatedBy(accountLoginCommon.getUserName());
-        } catch (ParseException e) {
+            contact.setImageAfter(contactRequest.getImageAfter());
+            contact.setNumberId(contactRequest.getNumberId());
+            contact.setImageBefore(contactRequest.getImageBefore());
+        } catch (Exception e) {
             return ResponseModels.error(e.getMessage());
         }
         return ResponseModels.success(contactRepository.save(contact));
@@ -95,11 +104,13 @@ public class ContactServiceImpl implements ContactService {
                 contact = contactRepository.getAccountContactByEmail(accountLoginCommon.getUserName());
                 contact.setPhone(request.getPhone());
                 contact.setGender(Boolean.valueOf(request.getGender()));
-                contact.setDob(StringUtils.isNotEmpty(request.getDob()) ?
-                        new SimpleDateFormat("dd-MM-yyyy").parse(request.getDob()) : null);
+                contact.setDob(Utils.covertStringToDate(request.getDob()));
                 contact.setAddress(request.getAddress());
                 contact.setFullName(request.getFullName());
                 contact.setType(request.getType());
+                contact.setNumberId(request.getNumberId());
+                contact.setImageBefore(request.getImageBefore());
+                contact.setImageAfter(request.getImageAfter());
                 contactRepository.save(contact);
             }
         } catch (Exception e) {

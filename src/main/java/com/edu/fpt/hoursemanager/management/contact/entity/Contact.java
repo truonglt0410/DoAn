@@ -4,12 +4,14 @@ import com.edu.fpt.hoursemanager.common.entity.EntityCommon;
 import com.edu.fpt.hoursemanager.management.account.entity.Account;
 import com.edu.fpt.hoursemanager.management.contract.entity.RenterRoom;
 import com.edu.fpt.hoursemanager.management.timesheet.entity.TimeSheet;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -25,6 +27,9 @@ public class Contact extends EntityCommon {
     private Boolean gender;
     private String address;
     private Boolean type;
+    private String numberId;
+    private String imageBefore;
+    private String imageAfter;
 
     @OneToOne(mappedBy = "contact")
     private Account account;

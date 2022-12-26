@@ -7,9 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetRoomResponse {
-    private Long idRoom;
-    private String codeTypeRoom;
-    private String nameRoom;
-    private String roomImage;
+public class DetailAssetsResponse {
+    private String assetsName;
+    private String color;
+    private String model;
 }

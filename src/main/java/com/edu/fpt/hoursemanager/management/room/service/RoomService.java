@@ -15,6 +15,8 @@ public interface RoomService {
 
     ResponseEntity<ResponseModels> viewRoomById(Long id);
 
+    ResponseEntity<ResponseModels> viewDetailRoomById(Long id);
+
     ResponseEntity<ResponseModels> searchRoomByName(String name, Long id);
 
     ResponseEntity<ResponseModels> getAllRoom();

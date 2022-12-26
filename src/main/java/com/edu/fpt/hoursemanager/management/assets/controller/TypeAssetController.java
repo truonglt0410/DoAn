@@ -28,4 +28,9 @@ public class TypeAssetController {
     public ResponseEntity<ResponseModels> deleteTypeAsset(@RequestParam Long id) {
         return typeAssetService.deleteTypeAsset(id);
     }
+
+    @PostMapping("/update")
+    public ResponseEntity<ResponseModels> updateTypeAssets(@RequestBody TypeAssetRequest request) throws HouseManagerExceptions {
+        return typeAssetService.updateTypeAsset(request);
+    }
 }

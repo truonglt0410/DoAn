@@ -115,4 +115,9 @@ public class AssetServiceImpl implements AssetService {
     public ResponseEntity<ResponseModels> getAllAssetsNotRoom() {
         return ResponseModels.success(assetRepository.getAllAssetsNotRoom(), "success");
     }
+
+    @Override
+    public ResponseEntity<ResponseModels> getAssetByRoom(Long id) {
+        return ResponseModels.success(assetRepository.getAssetByRoom(id), "success");
+    }
 }

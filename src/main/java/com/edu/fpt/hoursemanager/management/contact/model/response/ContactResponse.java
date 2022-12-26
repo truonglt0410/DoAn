@@ -17,5 +17,8 @@ public class ContactResponse {
     private Boolean gender;
     private String address;
     private String emailAccount;
+    private String numberId;
+    private String imageBefore;
+    private String imageAfter;
     private Set<String> role;
 }

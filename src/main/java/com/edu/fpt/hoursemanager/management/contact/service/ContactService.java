@@ -15,4 +15,6 @@ public interface ContactService {
     ResponseEntity<ResponseModels> getCurrentAccountContact();
 
     ResponseEntity<ResponseModels> getContactAndAccountByEmail(String email);
+
+    ResponseEntity<ResponseModels> deleteContact(Long id);
 }
