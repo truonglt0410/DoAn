@@ -1,10 +1,10 @@
 package com.edu.fpt.hoursemanager.management.building.service;
 
+import com.edu.fpt.hoursemanager.common.models.ResponseModels;
 import com.edu.fpt.hoursemanager.management.building.entity.Building;
-import com.edu.fpt.hoursemanager.management.building.model.form.CreateBuildingForm;
-import com.edu.fpt.hoursemanager.management.building.model.form.UpdateBuildingForm;
-import com.edu.fpt.hoursemanager.management.building.model.response.BuildingDetailResponse;
-import com.edu.fpt.hoursemanager.management.building.model.response.BuildingResponse;
+import com.edu.fpt.hoursemanager.management.building.model.request.CreateBuildingRequest;
+import com.edu.fpt.hoursemanager.management.building.model.request.UpdateBuildingRequest;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -13,13 +13,13 @@ public interface BuildingManageService {
 
     List<Building> saveBuilding(List<Building> buildings);
 
-    List<BuildingResponse> listAllBuildingByAccountId(Long id);
+    ResponseEntity<ResponseModels> listAllBuildingByAccountId();
 
-    BuildingDetailResponse getDetailBuildingById(Long id);
+    ResponseEntity<ResponseModels> getDetailBuildingById(Long id);
 
-    Boolean addBuilding(CreateBuildingForm createBuildingForm);
+    ResponseEntity<ResponseModels> addBuilding(CreateBuildingRequest createBuildingRequest);
 
-    Boolean updateBuilding(UpdateBuildingForm updateBuildingForm);
+    ResponseEntity<ResponseModels> updateBuilding(UpdateBuildingRequest updateBuildingRequest);
 
-    Boolean deleteBuilding(Long id);
+    ResponseEntity<ResponseModels> deleteBuilding(Long id);
 }

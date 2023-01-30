@@ -4,11 +4,10 @@ import com.edu.fpt.hoursemanager.common.models.ResponseModels;
 import com.edu.fpt.hoursemanager.management.account.entity.Account;
 import com.edu.fpt.hoursemanager.management.account.model.response.AccountResponse;
 import com.edu.fpt.hoursemanager.management.account.service.AccountService;
+import com.edu.fpt.hoursemanager.management.authentication.model.request.ChangePasswordRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,4 +26,9 @@ public class AccountController {
         return ResponseModels.success(accountList);
     }
 
+    @GetMapping(value = "/delete")
+    public ResponseEntity<ResponseModels> deleteAccount(@RequestParam String email){
+        Account account = accountService.deleteAccount(email);
+        return ResponseModels.success(account);
+    }
 }
