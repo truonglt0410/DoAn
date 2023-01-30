@@ -15,4 +15,5 @@ public class GetTypeRoomResponse {
     private String descriptionTypeRoom;
     private String roomAreaTypeRoom;
     private String depositTypeRoom;
+    private Long idBuilding;
 }

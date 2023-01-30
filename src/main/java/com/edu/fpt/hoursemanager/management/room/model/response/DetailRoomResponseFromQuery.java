@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class DetailRoomResponseFromQuery {
     private Long id;
     private String roomName;
+    private String imageRoom;
     private String typeRoomName;
     private String capacity;
     private String deposit;

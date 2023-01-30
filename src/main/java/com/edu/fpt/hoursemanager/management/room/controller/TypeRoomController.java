@@ -1,7 +1,6 @@
 package com.edu.fpt.hoursemanager.management.room.controller;
 
 import com.edu.fpt.hoursemanager.common.models.ResponseModels;
-import com.edu.fpt.hoursemanager.exceptions.HouseManagerExceptions;
 import com.edu.fpt.hoursemanager.management.room.model.request.CreateTypeRoomRequest;
 import com.edu.fpt.hoursemanager.management.room.model.request.UpdateTypeRoomRequest;
 import com.edu.fpt.hoursemanager.management.room.service.TypeRoomService;
@@ -16,7 +15,7 @@ public class TypeRoomController {
     private TypeRoomService typeRoomService;
 
     @PostMapping("/update")
-    public ResponseEntity<ResponseModels> updateTypeRoom(@RequestBody UpdateTypeRoomRequest updateTypeRoomRequest) throws HouseManagerExceptions {
+    public ResponseEntity<ResponseModels> updateTypeRoom(@RequestBody UpdateTypeRoomRequest updateTypeRoomRequest) {
         return typeRoomService.updateTypeRoom(updateTypeRoomRequest);
     }
     @GetMapping("/get-all")
@@ -24,8 +23,13 @@ public class TypeRoomController {
         return typeRoomService.getAllTypeRoom();
     }
 
+    @GetMapping("/get-all-by-building")
+    public ResponseEntity<ResponseModels> getAllTypeRoomByBuilding(@RequestParam Long id){
+        return typeRoomService.getAllTypeRoom();
+    }
+
     @PostMapping("/create")
-    public ResponseEntity<ResponseModels> createTypeRoom(@RequestBody CreateTypeRoomRequest createTypeRoomRequest) throws HouseManagerExceptions {
+    public ResponseEntity<ResponseModels> createTypeRoom(@RequestBody CreateTypeRoomRequest createTypeRoomRequest) {
         return typeRoomService.createTypeRoom(createTypeRoomRequest);
     }
 }

@@ -17,5 +17,7 @@ public interface TypeRoomService {
 
       ResponseEntity<ResponseModels> getAllTypeRoom();
 
+      ResponseEntity<ResponseModels> getTypeRoomByBuilding(Long id);
+
       ResponseEntity<ResponseModels> createTypeRoom(CreateTypeRoomRequest createTypeRoomRequest);
 }

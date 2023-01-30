@@ -7,6 +7,7 @@ import com.edu.fpt.hoursemanager.management.assets.entity.TypeAssets;
 import com.edu.fpt.hoursemanager.management.assets.model.request.AssetRequest;
 import com.edu.fpt.hoursemanager.management.assets.repository.AssetRepository;
 import com.edu.fpt.hoursemanager.management.assets.service.AssetService;
+import com.edu.fpt.hoursemanager.management.building.entity.Building;
 import com.edu.fpt.hoursemanager.management.room.entity.Room;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -47,6 +48,10 @@ public class AssetServiceImpl implements AssetService {
             TypeAssets typeAssets = new TypeAssets();
             typeAssets.setId(assetRequest.getIdTypeAssets());
             assets.setTypeAssets(typeAssets);
+
+            Building building = new Building();
+            building.setId(assetRequest.getIdBuilding());
+            assets.setBuilding(building);
 
             if(!String.valueOf(assetRequest.getIdRoom()).equals("") && assetRequest.getIdRoom()!=null){
                 Room room = new Room();

@@ -4,6 +4,8 @@ import com.edu.fpt.hoursemanager.common.entity.AccountLoginCommon;
 import com.edu.fpt.hoursemanager.common.models.ResponseModels;
 import com.edu.fpt.hoursemanager.management.account.entity.Account;
 import com.edu.fpt.hoursemanager.management.account.service.AccountService;
+import com.edu.fpt.hoursemanager.management.assets.entity.TypeAssets;
+import com.edu.fpt.hoursemanager.management.assets.repository.TypeAssetRepository;
 import com.edu.fpt.hoursemanager.management.building.entity.Building;
 import com.edu.fpt.hoursemanager.management.building.entity.Utilities;
 import com.edu.fpt.hoursemanager.management.building.model.request.CreateBuildingRequest;
@@ -13,6 +15,8 @@ import com.edu.fpt.hoursemanager.management.building.model.response.BuildingResp
 import com.edu.fpt.hoursemanager.management.building.repository.BuildingManageRepository;
 import com.edu.fpt.hoursemanager.management.building.service.BuildingManageService;
 import com.edu.fpt.hoursemanager.management.building.service.UtilitiesManageService;
+import com.edu.fpt.hoursemanager.management.room.entity.TypeRoom;
+import com.edu.fpt.hoursemanager.management.room.repository.TypeRoomRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +36,10 @@ public class BuildingManageServiceImpl implements BuildingManageService {
     private BuildingManageRepository buildingManageRepository;
     @Autowired
     private UtilitiesManageService utilitiesManageService;
+    @Autowired
+    private TypeAssetRepository typeAssetRepository;
+    @Autowired
+    private TypeRoomRepository typeRoomRepository;
     @Autowired
     private AccountService accountService;
     @Override
@@ -110,7 +118,7 @@ public class BuildingManageServiceImpl implements BuildingManageService {
                     building.setModifiedBy(accountLoginCommon.getUserName());
                     building.setLongitude(createBuildingRequest.getLongitude());
                     building.setLatitude(createBuildingRequest.getLatitude());
-                    building.setImage(createBuildingRequest.getImageName());
+                    building.setImageName(createBuildingRequest.getImageName());
                     // save rules and utilities to Building
                     utilitiesManageService.addUtilitiesToBuilding(building, createBuildingRequest.getRules(), createBuildingRequest.getUtilities());
                     Account account = accountService.getAccount(accountLoginCommon.getUserName());
@@ -173,6 +181,7 @@ public class BuildingManageServiceImpl implements BuildingManageService {
             building = buildingManageRepository.getBuildingById(id);
             if (building != null) {
                 building.setDeleted(true);
+                deleteTypeRoomAndTypeAssetWithBuilding(id);
                 building.setModifiedBy(accountLoginCommon.getUserName());
                 buildingManageRepository.save(building);
             } else {
@@ -184,5 +193,23 @@ public class BuildingManageServiceImpl implements BuildingManageService {
         return ResponseModels.success("Delete Building success.");
     }
 
+
+    private void deleteTypeRoomAndTypeAssetWithBuilding(Long idBuilding){
+        List<TypeAssets> typeAssets = typeAssetRepository.getTypeAssetsByBuilding(idBuilding);
+        if (typeAssets!= null){
+            for(TypeAssets typeAsset : typeAssets ){
+                typeAsset.setDeleted(true);
+            }
+            typeAssetRepository.saveAll(typeAssets);
+        }
+
+        List<TypeRoom> typeRooms = typeRoomRepository.getTypeRoomByBuilding(idBuilding);
+        if(typeRooms != null){
+            for(TypeRoom typeRoom : typeRooms){
+                typeRoom.setDeleted(true);
+            }
+            typeRoomRepository.saveAll(typeRooms);
+        }
+    }
 
 }

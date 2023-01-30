@@ -9,9 +9,15 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface TypeRoomRepository extends JpaRepository<TypeRoom, Long> {
-    @Query("select new com.edu.fpt.hoursemanager.management.room.model.response.GetTypeRoomResponse(t.id,t.name,t.price,t.capacity,t.description,t.roomArea,t.deposit) from TypeRoom t where t.deleted = false ")
+    @Query("select new com.edu.fpt.hoursemanager.management.room.model.response.GetTypeRoomResponse(t.id,t.name,t.price,t.capacity,t.description,t.roomArea,t.deposit, t.idBuilding) from TypeRoom t where t.deleted = false ")
     List<GetTypeRoomResponse> getAllTypeRoom();
 
     @Query("select t from TypeRoom t where t.deleted = false and t.id = :id")
     TypeRoom getTypeRoomById(@Param("id") Long id);
+
+    @Query("select t from TypeRoom t where t.idBuilding = :id and t.deleted = false ")
+    List<TypeRoom> getTypeRoomByBuilding(@Param("id") Long id);
+
+    @Query("select new com.edu.fpt.hoursemanager.management.room.model.response.GetTypeRoomResponse(t.id,t.name,t.price,t.capacity,t.description,t.roomArea,t.deposit, t.idBuilding) from TypeRoom t where t.idBuilding = :id and t.deleted = false ")
+    List<GetTypeRoomResponse> getTypeRoomByBuilding1(@Param("id") Long id);
 }

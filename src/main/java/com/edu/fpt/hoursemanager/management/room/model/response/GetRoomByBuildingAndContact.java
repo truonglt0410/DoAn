@@ -13,6 +13,7 @@ public class GetRoomByBuildingAndContact {
     private Long codeTypeRoom;
     private String capacity;
     private String nameRoom;
+    private String imageRoom;
     private Long idBuilding;
     private String buildingName;
     private Long price;

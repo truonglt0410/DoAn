@@ -11,4 +11,5 @@ public class TypeAssetResponse {
     private Long idTypeAsset;
     private String nameTypeAsset;
     private String codeTypeAsset;
+    private Long idBuilding;
 }

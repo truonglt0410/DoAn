@@ -15,4 +15,5 @@ public class CreateTypeRoomRequest {
     private String roomArea;
     private String deposit;
     private String rooms;
+    private Long idBuilding;
 }

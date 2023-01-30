@@ -1,7 +1,6 @@
 package com.edu.fpt.hoursemanager.management.assets.controller;
 
 import com.edu.fpt.hoursemanager.common.models.ResponseModels;
-import com.edu.fpt.hoursemanager.exceptions.HouseManagerExceptions;
 import com.edu.fpt.hoursemanager.management.assets.model.response.WarehouseResponse;
 import com.edu.fpt.hoursemanager.management.assets.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +15,12 @@ public class WarehouseController {
     WarehouseService warehouseService;
 
     @GetMapping("/get-all")
-    public ResponseEntity<ResponseModels> getAllWarehouses() throws HouseManagerExceptions {
+    public ResponseEntity<ResponseModels> getAllWarehouses() {
         return warehouseService.getAllWarehouse();
     }
 
     @PostMapping("/add")
-    public ResponseEntity<ResponseModels> createWarehouses(@RequestBody WarehouseResponse response) throws HouseManagerExceptions {
+    public ResponseEntity<ResponseModels> createWarehouses(@RequestBody WarehouseResponse response) {
         return warehouseService.createWarehouse(response);
     }
 }

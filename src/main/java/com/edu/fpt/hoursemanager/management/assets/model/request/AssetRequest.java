@@ -16,4 +16,5 @@ public class AssetRequest {
 //    private Long idWarehouse;
     private Long idTypeAssets;
     private Long idRoom;
+    private Long idBuilding;
 }

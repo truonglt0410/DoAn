@@ -50,7 +50,7 @@ public class Swagger {
         //************************************
         return new ApiInfoBuilder().title("Capstone Project of FPT University")
                 .description("Project Spring Boot Hourse Manager")
-                .contact(new Contact("truongtv", "https://www.facebook.com/i.am.money.addict/", "truongtv1399it@gmail.com"))
+                .contact(new Contact("thiennt", "https://www.facebook.com/thien2399", "trungthien2399@gmail.com"))
                 .license("Apache 2.0")
                 .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
                 .version("1.0.0")

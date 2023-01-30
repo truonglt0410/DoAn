@@ -76,9 +76,7 @@ public class Security extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers(AUTH_WHITELIST).permitAll()
-                .antMatchers( "/authentication/otp").hasAnyAuthority("CN","KH")
-                .antMatchers("/authentication/google", "/authentication/forgot", "/authentication/logout").permitAll()
-                .antMatchers("/authentication/register", "/authentication/change-password").hasAnyAuthority("CN","KH")
+                .antMatchers("/authentication/**").permitAll()
 
                 .antMatchers("/admin/building/add", "/admin/building/update", "/admin/building/delete"
                         , "/room/add", "/room/delete", "/room/type/update", "/authentication/register-employee"

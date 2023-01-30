@@ -15,4 +15,5 @@ public class UpdateTypeRoomRequest {
     private String roomArea;
     private String deposit;
     private Long idTypeRoom;
+    private Long idBuilding;
 }

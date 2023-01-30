@@ -2,13 +2,11 @@ package com.edu.fpt.hoursemanager.management.room.service.impl;
 
 import com.edu.fpt.hoursemanager.common.entity.AccountLoginCommon;
 import com.edu.fpt.hoursemanager.common.models.ResponseModels;
-import com.edu.fpt.hoursemanager.management.account.service.AccountService;
+import com.edu.fpt.hoursemanager.management.building.repository.BuildingManageRepository;
 import com.edu.fpt.hoursemanager.management.room.entity.TypeRoom;
 import com.edu.fpt.hoursemanager.management.room.model.request.CreateTypeRoomRequest;
 import com.edu.fpt.hoursemanager.management.room.model.request.UpdateTypeRoomRequest;
-import com.edu.fpt.hoursemanager.management.room.repository.RoomRepository;
 import com.edu.fpt.hoursemanager.management.room.repository.TypeRoomRepository;
-import com.edu.fpt.hoursemanager.management.room.service.RoomService;
 import com.edu.fpt.hoursemanager.management.room.service.TypeRoomService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,19 +22,11 @@ import java.time.LocalDate;
 public class TypeRoomServiceImpl implements TypeRoomService {
 
     @Autowired
-    private TypeRoomService typeRoomService;
-
-    @Autowired
     private TypeRoomRepository typeRoomRepository;
 
-    @Autowired
-    private RoomRepository roomRepository;
 
     @Autowired
-    private RoomService roomService;
-
-    @Autowired
-    private AccountService accountService;
+    private BuildingManageRepository buildingManageRepository;
 
     @Override
     public TypeRoom getTypeRoomById(Long id){
@@ -56,6 +46,9 @@ public class TypeRoomServiceImpl implements TypeRoomService {
             typeRoom.setName(updateTypeRoom.getName());
             typeRoom.setModifiedBy(accountLoginCommon.getUserName());
             typeRoom.setModifiedDate(LocalDate.now());
+            if(buildingManageRepository.getBuildingById(updateTypeRoom.getIdBuilding())!=null){
+                typeRoom.setIdBuilding(updateTypeRoom.getIdBuilding());
+            }
             typeRoomRepository.save(typeRoom);
         }catch (Exception exception){
             return ResponseModels.error(exception.getMessage());
@@ -66,6 +59,11 @@ public class TypeRoomServiceImpl implements TypeRoomService {
     @Override
     public ResponseEntity<ResponseModels> getAllTypeRoom() {
         return ResponseModels.success(typeRoomRepository.getAllTypeRoom());
+    }
+
+    @Override
+    public ResponseEntity<ResponseModels> getTypeRoomByBuilding(Long id) {
+        return ResponseModels.success(typeRoomRepository.getTypeRoomByBuilding1(id));
     }
 
     @Override
@@ -80,6 +78,9 @@ public class TypeRoomServiceImpl implements TypeRoomService {
         typeRoom.setCreatedBy(accountLoginCommon.getUserName());
         typeRoom.setCreatedDate(LocalDate.now());
         typeRoom.setPrice(createTypeRoomRequest.getPrice());
+        if(buildingManageRepository.getBuildingById(createTypeRoomRequest.getIdBuilding())!=null){
+            typeRoom.setIdBuilding(createTypeRoomRequest.getIdBuilding());
+        }
         return ResponseModels.success(typeRoomRepository.save(typeRoom));
     }
 

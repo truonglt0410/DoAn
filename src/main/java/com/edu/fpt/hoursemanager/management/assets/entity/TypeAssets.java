@@ -18,6 +18,7 @@ import java.util.Collection;
 public class TypeAssets extends EntityCommon {
     private String name;
     private String code;
+    private Long idBuilding;
 
     @OneToMany(mappedBy = "typeAssets",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     Collection<Assets> assets;

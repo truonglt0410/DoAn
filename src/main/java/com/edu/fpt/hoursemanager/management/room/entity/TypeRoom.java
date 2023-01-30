@@ -22,6 +22,7 @@ public class TypeRoom extends EntityCommon {
     private String description;
     private String roomArea;
     private String deposit;
+    private Long idBuilding;
 
     @OneToMany(mappedBy = "typeRooms", cascade = CascadeType.ALL)
     @JsonIgnore

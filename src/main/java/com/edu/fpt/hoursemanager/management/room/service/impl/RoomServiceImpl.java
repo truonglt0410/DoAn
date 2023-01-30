@@ -15,6 +15,7 @@ import com.edu.fpt.hoursemanager.management.room.repository.TypeRoomRepository;
 import com.edu.fpt.hoursemanager.management.room.service.RoomService;
 import com.edu.fpt.hoursemanager.management.room.service.TypeRoomService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -75,6 +76,7 @@ public class RoomServiceImpl implements RoomService {
                     roomByBuildingAndContact.setIdBuilding(roomBuilding.getIdBuilding());
                     roomByBuildingAndContact.setBuildingName(roomBuilding.getBuildingName());
                     roomByBuildingAndContact.setCodeTypeRoom(roomBuilding.getCodeTypeRoom());
+                    roomByBuildingAndContact.setImageRoom(roomBuilding.getRoomImage());
                     roomByBuildingAndContact.setCapacity(roomBuilding.getCapacity());
                     roomByBuildingAndContact.setPrice(roomBuilding.getPrice());
                     int status = 0;
@@ -103,17 +105,24 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public ResponseEntity<ResponseModels> updateRoom(UpdateRoomRequest updateRoomRequest) {
         try {
-            Room room = new Room();
-            room.setId(updateRoomRequest.getIdRoom());
-
+            Room room = roomRepository.getDetailRoom(updateRoomRequest.getIdRoom());
             room.setName(updateRoomRequest.getNameRoom());
             room.setRoomImage(updateRoomRequest.getRoomImage());
             room.setCodeTypeRoom(updateRoomRequest.getCodeTypeRoom());
-            TypeRoom typeRoom = new TypeRoom();
-            typeRoom.setId(updateRoomRequest.getIdTypeRoom());
-            room.setTypeRooms(typeRoom);
-            Building building = new Building();
-            building.setId(updateRoomRequest.getIdBuilding());
+            if(updateRoomRequest.getIdTypeRoom()!= null){
+                TypeRoom typeRoom = new TypeRoom();
+                typeRoom.setId(updateRoomRequest.getIdTypeRoom());
+                room.setTypeRooms(typeRoom);
+            }else{
+                room.setTypeRooms(null);
+            }
+            if(updateRoomRequest.getIdBuilding()!= null) {
+                Building building = new Building();
+                building.setId(updateRoomRequest.getIdBuilding());
+                room.setBuilding(building);
+            }else {
+                room.setBuilding(null);
+            }
             roomRepository.save(room);
         } catch (Exception e) {
             return ResponseModels.error(e.getMessage());
@@ -226,6 +235,7 @@ public class RoomServiceImpl implements RoomService {
                 if (detailRoomResponseApi.getId() == null) {
                     detailRoomResponseApi.setId(item.getId());
                     detailRoomResponseApi.setRoomName(item.getRoomName());
+                    detailRoomResponseApi.setImageRoom(item.getImageRoom());
                     detailRoomResponseApi.setBuildingName(item.getBuildingName());
                     detailRoomResponseApi.setTypeRoomName(item.getTypeRoomName());
                     detailRoomResponseApi.setCapacity(item.getCapacity());

@@ -11,6 +11,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface WorkRepository extends JpaRepository<Work, Long> {
-    @Query("select new com.edu.fpt.hoursemanager.management.timesheet.model.response.WorkResponse(w.name) from Work w where w.deleted = false ")
+    @Query("select new com.edu.fpt.hoursemanager.management.timesheet.model.response.WorkResponse(w.id, w.name) from Work w where w.deleted = false ")
     List<WorkResponse> lsWorkResponse();
 }

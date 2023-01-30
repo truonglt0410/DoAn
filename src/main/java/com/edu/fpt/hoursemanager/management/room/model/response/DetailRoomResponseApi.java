@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class DetailRoomResponseApi {
     private Long id;
     private String roomName;
+    private String imageRoom;
     private List<DetailAssetsResponse> assets;
     private String buildingName;
     private String typeRoomName;

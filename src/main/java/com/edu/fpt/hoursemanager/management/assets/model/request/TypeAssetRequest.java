@@ -11,4 +11,5 @@ public class TypeAssetRequest {
     private Long id;
     private String code;
     private String name;
+    private Long idBuilding;
 }

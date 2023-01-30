@@ -2,7 +2,6 @@ package com.edu.fpt.hoursemanager.management.assets.service.Impl;
 
 import com.edu.fpt.hoursemanager.common.entity.AccountLoginCommon;
 import com.edu.fpt.hoursemanager.common.models.ResponseModels;
-import com.edu.fpt.hoursemanager.management.assets.entity.Assets;
 import com.edu.fpt.hoursemanager.management.assets.entity.TypeAssets;
 import com.edu.fpt.hoursemanager.management.assets.model.request.TypeAssetRequest;
 import com.edu.fpt.hoursemanager.management.assets.model.response.AssetResponse;
@@ -10,6 +9,7 @@ import com.edu.fpt.hoursemanager.management.assets.model.response.GetTypeAssetsR
 import com.edu.fpt.hoursemanager.management.assets.model.response.TypeAssetsResponseApi;
 import com.edu.fpt.hoursemanager.management.assets.repository.TypeAssetRepository;
 import com.edu.fpt.hoursemanager.management.assets.service.TypeAssetService;
+import com.edu.fpt.hoursemanager.management.building.repository.BuildingManageRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +27,9 @@ public class TypeAssetServiceImpl implements TypeAssetService {
 
     @Autowired
     TypeAssetRepository typeAssetRepository;
+
+    @Autowired
+    BuildingManageRepository buildingManageRepository;
 
     @Override
     public ResponseEntity<ResponseModels> getAllTypeAssets() {
@@ -62,6 +65,11 @@ public class TypeAssetServiceImpl implements TypeAssetService {
     }
 
     @Override
+    public ResponseEntity<ResponseModels> getTypeAssetsByBuilding(Long id) {
+        return ResponseModels.success(typeAssetRepository.getTypeAssetsByBuilding1(id));
+    }
+
+    @Override
     public ResponseEntity<ResponseModels> createTypeAssets(TypeAssetRequest request) {
         AccountLoginCommon loginCommon = new AccountLoginCommon();
         TypeAssets typeAssets = new TypeAssets();
@@ -69,7 +77,9 @@ public class TypeAssetServiceImpl implements TypeAssetService {
         typeAssets.setCode(request.getCode());
         typeAssets.setCreatedBy(loginCommon.getUserName());
         typeAssets.setCreatedDate(LocalDate.now());
-
+        if(buildingManageRepository.getBuildingById(request.getIdBuilding())!=null){
+            typeAssets.setIdBuilding(request.getIdBuilding());
+        }
         return ResponseModels.success(typeAssetRepository.save(typeAssets), "success");
     }
 
@@ -104,7 +114,9 @@ public class TypeAssetServiceImpl implements TypeAssetService {
 
             typeAssets.setName(typeAssetRequest.getName());
             typeAssets.setCode(typeAssetRequest.getCode());
-
+            if(buildingManageRepository.getBuildingById(typeAssetRequest.getIdBuilding())!=null){
+                typeAssets.setIdBuilding(typeAssetRequest.getIdBuilding());
+            }
             typeAssetRepository.save(typeAssets);
         }catch (Exception e){
             return ResponseModels.error(e.getMessage());

@@ -56,4 +56,7 @@ public class Building extends EntityCommon {
 
     @OneToMany(mappedBy = "building", cascade = CascadeType.ALL)
     private Collection<Service> services;
+
+    @OneToMany(mappedBy = "building", cascade = CascadeType.ALL)
+    private Collection<Service> assets;
 }

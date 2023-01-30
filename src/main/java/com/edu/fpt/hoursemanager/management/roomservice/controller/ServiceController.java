@@ -65,7 +65,7 @@ public class ServiceController {
     }
 
     @GetMapping("/get-all-by-id-building")
-    public ResponseEntity<ResponseModels> getAllServiceByIdBuilding(@RequestParam Long id) throws HouseManagerExceptions {
+    public ResponseEntity<ResponseModels> getAllServiceByIdBuilding(@RequestParam Long id) {
         return serviceService.getAllServiceByIdBuilding(id);
     }
 }

@@ -1,6 +1,7 @@
 package com.edu.fpt.hoursemanager.management.assets.entity;
 
 import com.edu.fpt.hoursemanager.common.entity.EntityCommon;
+import com.edu.fpt.hoursemanager.management.building.entity.Building;
 import com.edu.fpt.hoursemanager.management.issue.entity.Issue;
 import com.edu.fpt.hoursemanager.management.room.entity.Room;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -36,4 +37,8 @@ public class Assets extends EntityCommon {
 
     @OneToMany(mappedBy = "asset", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Collection<Issue> issue;
+
+    @ManyToOne
+    @JoinColumn(name = "building_id")
+    private Building building;
 }
